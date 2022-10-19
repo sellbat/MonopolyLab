@@ -55,17 +55,19 @@ public class Player {
         this.properties = properties;
     }
 
-    public Player(String playerName){
-        money = 1500.00;
-        Player.name = playerName;
-
+    public Player(String playerName, ArrayList<BoardSpace> properties, Link start){
+        setMoney(1500.00);
+        setName(playerName);
+        setProperties(properties);
+        setPosition(start);
+        setJailed(false);
+        setTurnsInJail(0);
     }
     public boolean land(BoardSpace spot){
         if (spot.purchasable) {
-            System.out.println("Would you like to purchase this land?");
-            
-        }
 
+        }
+        
     }
     public double pay(BoardSpace spot){
         money -= spot.
