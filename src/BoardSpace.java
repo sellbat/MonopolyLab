@@ -5,14 +5,24 @@ public class BoardSpace {
     private boolean purchasable;
     private boolean jail;
     private String color;
+    private String name;
 
-    public BoardSpace(int cost, int fee, int sell, boolean purchasable, boolean jail, String color){
+    public BoardSpace(String name,int cost, int fee, int sell, boolean purchasable, boolean jail, String color){
+        this.name=name;
         this.color=color;
         this.cost=cost;
         this.fee=fee;
-        this.sell=sell;
+        this.sell=cost/2;
         this.purchasable=purchasable;
         this.jail=jail;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getCost() {
