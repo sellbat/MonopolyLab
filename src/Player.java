@@ -64,41 +64,39 @@ public class Player {
         setJailed(false);
         setTurnsInJail(0);
     }
-    public int move(int moves, CircularLinkedList map, ){
+    public void move(int moves, CircularLinkedList map){
         Link current = getPosition();
+        BoardSpace spot = (BoardSpace) current.data;
         for(int i=0; i<moves; i++){
             current = current.nextLink;
-            if(current.getName().equals("Go")){
+            if(current==map.getFirst()){ //adds 200 to balance for passig Go
                 setMoney(getMoney()+200);
             }
         }
         setPosition(current);
-        BoardSpace spot = (BoardSpace) current.data;
         if(jailed){
             setTurnsInJail(getTurnsInJail()-1);
             System.out.println(getName() + "'s turn has ended");
         }
         else {
-            if (spot.getName().equals("goToJail")) {
-                map.find();
-                setPosition(jail);
+            if (spot.getColor().equals("weird")) {
+
                 setTurnsInJail(3);
                 System.out.println(getName() + "'s turn has ended");
             } else {
                 pay(spot);
                 buy(spot);
-
             }
         }
 
     }
-
     public void pay(BoardSpace spot){
         setMoney(money -= spot.getFee());
     }
     public void buy(BoardSpace spot){
         Scanner input = new Scanner(System.in);
         boolean sameColor = false;
+        if()
         String color = properties.get(0).getColor();
         outer:
         for (int i = 0; i < properties.size(); i++) { //checks if player has all same color properties
@@ -107,7 +105,7 @@ public class Player {
                 break outer;
             }
         }
-        if (spot.isPurchasable() && sameColor && spot.getColor().equals(color)) {
+        if (spot.isPurchasable() && sameColor && spot.getColor().equals(color)) { //all requirements to purchase property
             System.out.println(getName() + " would you like to purchase " + spot.getName() + " for " + spot.getCost());
             String ans = input.next();
             if (ans.equals("yes") || ans.equals("Yes")) {

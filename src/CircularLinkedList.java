@@ -1,6 +1,24 @@
 public class CircularLinkedList {
+
+
     private Link first;
     private Link last;
+
+    public Link getFirst() {
+        return first;
+    }
+
+    public void setFirst(Link first) {
+        this.first = first;
+    }
+
+    public Link getLast() {
+        return last;
+    }
+
+    public void setLast(Link last) {
+        this.last = last;
+    }
     public CircularLinkedList(){
         first = null;
         last = null;
