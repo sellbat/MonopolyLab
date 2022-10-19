@@ -80,7 +80,7 @@ public class Player {
         }
         else {
             if (spot.getColor().equals("weird")) {
-
+                
                 setTurnsInJail(3);
                 System.out.println(getName() + "'s turn has ended");
             } else {
@@ -95,17 +95,20 @@ public class Player {
     }
     public void buy(BoardSpace spot){
         Scanner input = new Scanner(System.in);
-        boolean sameColor = false;
-        if()
-        String color = properties.get(0).getColor();
-        outer:
-        for (int i = 0; i < properties.size(); i++) { //checks if player has all same color properties
-            if (!properties.get(i).getColor().equals(color)) {
-                sameColor = false;
-                break outer;
+        String color = "";
+        if(properties.size()>0) {
+            color = properties.get(0).getColor();
+        }
+        if (spot.isPurchasable() && properties.size()>0 && spot.getColor().equals(color)) { //all requirements to purchase property
+            System.out.println(getName() + " would you like to purchase " + spot.getName() + " for " + spot.getCost());
+            String ans = input.next();
+            if (ans.equals("yes") || ans.equals("Yes")) {
+                setMoney(getMoney() - spot.getCost());
+            } else {
+                System.out.println(getName() + "'s turn has ended");
             }
         }
-        if (spot.isPurchasable() && sameColor && spot.getColor().equals(color)) { //all requirements to purchase property
+        if(properties.size()==0){ //when the player has no properties
             System.out.println(getName() + " would you like to purchase " + spot.getName() + " for " + spot.getCost());
             String ans = input.next();
             if (ans.equals("yes") || ans.equals("Yes")) {
