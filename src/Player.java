@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Player {
     private static String name;
@@ -63,18 +64,58 @@ public class Player {
         setJailed(false);
         setTurnsInJail(0);
     }
-    public boolean land(BoardSpace spot){
-        if (spot.purchasable) {
-
+    public int move(int moves, CircularLinkedList map, ){
+        Link current = getPosition();
+        for(int i=0; i<moves; i++){
+            current = current.nextLink;
+            if(current.getName().equals("Go")){
+                setMoney(getMoney()+200);
+            }
         }
-        
-    }
-    public double pay(BoardSpace spot){
-        money -= spot.
+        setPosition(current);
+        BoardSpace spot = (BoardSpace) current.data;
+        if(jailed){
+            setTurnsInJail(getTurnsInJail()-1);
+            System.out.println(getName() + "'s turn has ended");
+        }
+        else {
+            if (spot.getName().equals("goToJail")) {
+                map.find();
+                setPosition(jail);
+                setTurnsInJail(3);
+                System.out.println(getName() + "'s turn has ended");
+            } else {
+                pay(spot);
+                buy(spot);
+
+            }
+        }
 
     }
-    public double buy(){
 
+    public void pay(BoardSpace spot){
+        setMoney(money -= spot.getFee());
+    }
+    public void buy(BoardSpace spot){
+        Scanner input = new Scanner(System.in);
+        boolean sameColor = false;
+        String color = properties.get(0).getColor();
+        outer:
+        for (int i = 0; i < properties.size(); i++) { //checks if player has all same color properties
+            if (!properties.get(i).getColor().equals(color)) {
+                sameColor = false;
+                break outer;
+            }
+        }
+        if (spot.isPurchasable() && sameColor && spot.getColor().equals(color)) {
+            System.out.println(getName() + " would you like to purchase " + spot.getName() + " for " + spot.getCost());
+            String ans = input.next();
+            if (ans.equals("yes") || ans.equals("Yes")) {
+                setMoney(getMoney() - spot.getCost());
+            } else {
+                System.out.println(getName() + "'s turn has ended");
+            }
+        }
     }
 
 }

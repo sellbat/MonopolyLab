@@ -4,6 +4,7 @@ public class BoardSpace {
     private int sell;
     private boolean purchasable;
     private boolean jail;
+
     private String color;
 
     public BoardSpace(int cost, int fee, int sell, boolean purchasable, boolean jail, String color){
