@@ -56,9 +56,10 @@ public class Player {
         this.properties = properties;
     }
 
-    public Player(String playerName, ArrayList<BoardSpace> properties, Link start){
+    public Player(String playerName, Link start){
         setMoney(1500.00);
         setName(playerName);
+        ArrayList<BoardSpace> properties = new ArrayList<>();
         setProperties(properties);
         setPosition(start);
         setJailed(false);
