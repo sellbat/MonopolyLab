@@ -113,31 +113,16 @@ public class Player {
     public void buy(BoardSpace spot){
         Scanner input = new Scanner(System.in);
         String color = "";
-        if(properties.size()>0) {
-            color = properties.get(0).getColor();
+        System.out.println(getName() + " would you like to purchase " + spot.getName() + " for " + spot.getCost());
+        String ans = input.next();
+        if (ans.equals("yes") || ans.equals("Yes")) {
+            setMoney(getMoney() - spot.getCost());
+            properties.add(spot);
+            spot.setPurchasable(false);
+            //spot.setOwner() in main
         }
-        if (spot.isPurchasable() && properties.size()>0 && spot.getColor().equals(color)) { //all requirements to purchase property
-            System.out.println(getName() + " would you like to purchase " + spot.getName() + " for " + spot.getCost());
-            String ans = input.next();
-            if (ans.equals("yes") || ans.equals("Yes")) {
-                setMoney(getMoney() - spot.getCost());
-                properties.add(spot);
-                spot.setPurchasable(false);
-                //spot.setOwner() in main
-            } else {
-                System.out.println(getName() + "'s turn has ended");
-            }
-        }
-        if(properties.size()==0){ //when the player has no properties
-            System.out.println(getName() + " would you like to purchase " + spot.getName() + " for " + spot.getCost());
-            String ans = input.next();
-            if (ans.equals("yes") || ans.equals("Yes")) {
-                setMoney(getMoney() - spot.getCost());
-                properties.add(spot);
-                spot.setPurchasable(false);
-            } else {
-                System.out.println(getName() + "'s turn has ended");
-            }
+        else {
+            System.out.println(getName() + "'s turn has ended");
         }
     }
 
