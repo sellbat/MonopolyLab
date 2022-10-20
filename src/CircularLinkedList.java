@@ -4,7 +4,7 @@ public class CircularLinkedList<T> {
     private Link<T> first;
     private Link<T> last;
 
-    public Link getFirst() {
+    public Link<T> getFirst() {
         return first;
     }
 
@@ -12,7 +12,7 @@ public class CircularLinkedList<T> {
         this.first = first;
     }
 
-    public Link getLast() {
+    public Link<T> getLast() {
         return last;
     }
 
@@ -27,8 +27,8 @@ public class CircularLinkedList<T> {
     public boolean isEmpty(){
         return first==null&&last==null;
     }
-    public void insertFirst(Object newData){
-        Link<T> newLink = new Link(newData);
+    public void insertFirst(T newData){
+        Link<T> newLink = new Link<T>(newData);
         if (isEmpty()){
             first=newLink;
             last=newLink;
@@ -37,20 +37,18 @@ public class CircularLinkedList<T> {
         newLink.nextLink=first;
         first=newLink;
     }
-    public int find(T key){
+    public Link<T> find(Link<T> key){
         Link<T> current = first;
-        if (current.data.equals(key)){
-            return 0;
+        if (current.data.equals(key.data)){
+            return key;
         }
         current = current.nextLink;
-        int counter = 1;
         while (!current.data.equals(first.data)){
-            if (current.data.equals(key)){
-                return counter;
+            if (current.data.equals(key.data)){
+                return current;
             }
-            counter++;
             current=current.nextLink;
         }
-        return 0;
+        return key;
     }
 }

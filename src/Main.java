@@ -42,12 +42,14 @@ public class Main {
     static BoardSpace CC3 = new BoardSpace("Community Chest",0,0,0,false,false,"weird");
     static BoardSpace Ch3 = new BoardSpace("Chance",0,0,0,false,false,"weird");
     static BoardSpace Luxury = new BoardSpace("Luxury Tax",0,100,0,false,false,"weird");
+    public static int roll(){
+        return (int)(Math.random()*6+1+Math.random()*6+1);
+    }
     public static void main(String[] args) {
-        BoardSpace[] all = {Go,CC1,MediterraneanAvenue,BalticAvenue,Income,ReadingRR,OrientalAvenue,Ch1,VermontAvenue,ConnecticutAvenue,Jail,StCharlesPlace,ElectricCompany,StatesAvenue,VirginiaAvenue,PennsylvaniaRR,StJamesPlace,CC2,TennesseeAvenue,NewYorkAvenue,free,KentuckyAvenue,Ch2,IndianaAvenue,IllinoisAvenue,BORR,AtlanticAvenue,VentnorAvenue,WaterWorks,MarvinGardens,GoToJail,PacificAvenue,NorthCarolinaAvenue,CC3,PennsylvaniaAvenue,ShortLine,Ch3,ParkPlace,Luxury,Boardwalk};
+        BoardSpace[] all = {Go,MediterraneanAvenue,CC1,BalticAvenue,Income,ReadingRR,OrientalAvenue,Ch1,VermontAvenue,ConnecticutAvenue,Jail,StCharlesPlace,ElectricCompany,StatesAvenue,VirginiaAvenue,PennsylvaniaRR,StJamesPlace,CC2,TennesseeAvenue,NewYorkAvenue,free,KentuckyAvenue,Ch2,IndianaAvenue,IllinoisAvenue,BORR,AtlanticAvenue,VentnorAvenue,WaterWorks,MarvinGardens,GoToJail,PacificAvenue,NorthCarolinaAvenue,CC3,PennsylvaniaAvenue,ShortLine,Ch3,ParkPlace,Luxury,Boardwalk};
         for (int i=all.length-1;i>=0;i--){
             Link add = new Link(all[i]);
             board.insertFirst(add);
         }
-        System.out.println();
     }
 }
