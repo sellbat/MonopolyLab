@@ -1,14 +1,14 @@
-public class CircularLinkedList {
+public class CircularLinkedList<T> {
 
 
-    private Link first;
-    private Link last;
+    private Link<T> first;
+    private Link<T> last;
 
     public Link getFirst() {
         return first;
     }
 
-    public void setFirst(Link first) {
+    public void setFirst(Link<T> first) {
         this.first = first;
     }
 
@@ -16,7 +16,7 @@ public class CircularLinkedList {
         return last;
     }
 
-    public void setLast(Link last) {
+    public void setLast(Link<T> last) {
         this.last = last;
     }
     public CircularLinkedList(){
@@ -28,7 +28,7 @@ public class CircularLinkedList {
         return first==null&&last==null;
     }
     public void insertFirst(Object newData){
-        Link newLink = new Link(newData);
+        Link<T> newLink = new Link(newData);
         if (isEmpty()){
             first=newLink;
             last=newLink;
@@ -37,8 +37,8 @@ public class CircularLinkedList {
         newLink.nextLink=first;
         first=newLink;
     }
-    public int find(Object key){
-        Link current = first;
+    public int find(T key){
+        Link<T> current = first;
         if (current.data.equals(key)){
             return 0;
         }

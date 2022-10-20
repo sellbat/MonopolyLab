@@ -69,23 +69,39 @@ public class Player {
         BoardSpace spot = (BoardSpace) current.data;
         for(int i=0; i<moves; i++){
             current = current.nextLink;
-            if(current==map.getFirst()){ //adds 200 to balance for passig Go
+            if(current==map.getFirst()){ //adds 200 to balance for passing Go
                 setMoney(getMoney()+200);
             }
         }
-        setPosition(current);
         if(jailed){
             setTurnsInJail(getTurnsInJail()-1);
             System.out.println(getName() + "'s turn has ended");
         }
+
         else {
+            setPosition(current);
             if (spot.getColor().equals("weird")) {
-                
-                setTurnsInJail(3);
-                System.out.println(getName() + "'s turn has ended");
+                if(spot.getName().equals("Go To Jail")){
+                    setJailed(true);
+                    setTurnsInJail(3);
+                    setPosition(map.getLast()); //if last is the jail cell
+                    System.out.println(getName() + "'s turn has ended");
+                }
+                if(spot.getFee()>0){
+                    pay(spot);
+                    System.out.println(getName() + "'s turn has ended");
+                }
+                else{ //temporarily for the other weird spots
+                    System.out.println(getName() + "'s turn has ended");
+                }
+
             } else {
-                pay(spot);
-                buy(spot);
+                if(spot.isPurchasable()){
+                    buy(spot);
+                }
+                else{
+                    pay(spot);
+                }
             }
         }
 
@@ -104,6 +120,9 @@ public class Player {
             String ans = input.next();
             if (ans.equals("yes") || ans.equals("Yes")) {
                 setMoney(getMoney() - spot.getCost());
+                properties.add(spot);
+                spot.setPurchasable(false);
+
             } else {
                 System.out.println(getName() + "'s turn has ended");
             }
