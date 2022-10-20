@@ -84,7 +84,6 @@ public class Player {
                 if(spot.getName().equals("Go To Jail")){
                     setJailed(true);
                     setTurnsInJail(3);
-                    map.getFirst().nextLink.nextLink.nextLink.nextLink
                     setPosition(map.getLast()); //if last is the jail cell
                     System.out.println(getName() + "'s turn has ended");
                 }
@@ -109,6 +108,7 @@ public class Player {
     }
     public void pay(BoardSpace spot){
         setMoney(money -= spot.getFee());
+        spot.getOwner().setMoney(spot.getOwner().getMoney() + spot.getFee());
     }
     public void buy(BoardSpace spot){
         Scanner input = new Scanner(System.in);
@@ -123,7 +123,7 @@ public class Player {
                 setMoney(getMoney() - spot.getCost());
                 properties.add(spot);
                 spot.setPurchasable(false);
-
+                //spot.setOwner() in main
             } else {
                 System.out.println(getName() + "'s turn has ended");
             }
@@ -134,7 +134,7 @@ public class Player {
             if (ans.equals("yes") || ans.equals("Yes")) {
                 setMoney(getMoney() - spot.getCost());
                 properties.add(spot);
-                spot.setPurchasable(false); 
+                spot.setPurchasable(false);
             } else {
                 System.out.println(getName() + "'s turn has ended");
             }

@@ -8,6 +8,8 @@ public class BoardSpace {
     private String color;
     private String name;
 
+    private Player owner;
+
     public BoardSpace(String name,int cost, int fee, int sell, boolean purchasable, boolean jail, String color){
         this.name=name;
         this.color=color;
@@ -72,5 +74,10 @@ public class BoardSpace {
 
     public void setSell(int sell) {
         this.sell = sell;
+    }
+    public Player getOwner() {return owner;}
+
+    public void setOwner(Player owner) {
+        this.owner = owner;
     }
 }
