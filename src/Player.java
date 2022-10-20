@@ -69,8 +69,8 @@ public class Player {
         BoardSpace spot = (BoardSpace) current.data;
         for(int i=0; i<moves; i++){
             current = current.nextLink;
-            if(current==map.getFirst()){ //adds 200 to balance for passing Go
-                setMoney(getMoney()+200);
+            if(current==map.getFirst() && !jailed){ //adds 200 to balance for passing Go
+                    setMoney(getMoney()+200);
             }
         }
         if(jailed){
@@ -84,6 +84,7 @@ public class Player {
                 if(spot.getName().equals("Go To Jail")){
                     setJailed(true);
                     setTurnsInJail(3);
+                    map.getFirst().nextLink.nextLink.nextLink.nextLink
                     setPosition(map.getLast()); //if last is the jail cell
                     System.out.println(getName() + "'s turn has ended");
                 }
@@ -132,6 +133,8 @@ public class Player {
             String ans = input.next();
             if (ans.equals("yes") || ans.equals("Yes")) {
                 setMoney(getMoney() - spot.getCost());
+                properties.add(spot);
+                spot.setPurchasable(false); 
             } else {
                 System.out.println(getName() + "'s turn has ended");
             }
