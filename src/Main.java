@@ -1,8 +1,9 @@
 import javax.print.attribute.standard.OrientationRequested;
 import java.security.PKCS12Attribute;
+import java.util.ArrayList;
 
 public class Main {
-    static BoardSpace MediterraneanAvenue = new BoardSpace("MediterraneanAvenue",60,2,30,true,false,"brown");
+    static BoardSpace MediterraneanAvenue = new BoardSpace("Mediterranean Avenue",60,2,30,true,false,"brown");
     static BoardSpace BalticAvenue = new BoardSpace("Baltic Avenue",60,4,30,true,false,"brown");
     static BoardSpace ReadingRR = new BoardSpace("Reading RR",200,25,30,true,false,"rail");
     static BoardSpace OrientalAvenue = new BoardSpace("OrientalAvenue",100,6,30,true,false,"light blue");
@@ -30,8 +31,8 @@ public class Main {
     static BoardSpace ShortLine = new BoardSpace("Short Line",200,25,30,true,false,"rail");
     static BoardSpace ParkPlace = new BoardSpace("Park Place",350,35,30,true,false,"dark blue");
     static BoardSpace Boardwalk = new BoardSpace("Boardwalk",400,50,30,true,false,"dark blue");
-    static CircularLinkedList board = new CircularLinkedList();
-    static CircularLinkedList pieces = new CircularLinkedList();
+    static CircularLinkedList<BoardSpace> board = new CircularLinkedList();
+    static CircularLinkedList<Player> pieces = new CircularLinkedList();
     static BoardSpace Go = new BoardSpace("Go",0,0,0,false,false,"weird");
     static BoardSpace CC1 = new BoardSpace("Community Chest",0,0,0,false,false,"weird");
     static BoardSpace Income = new BoardSpace("Income Tax",0,200,0,false,false,"weird");
@@ -44,10 +45,6 @@ public class Main {
     static BoardSpace CC3 = new BoardSpace("Community Chest",0,0,0,false,false,"weird");
     static BoardSpace Ch3 = new BoardSpace("Chance",0,0,0,false,false,"weird");
     static BoardSpace Luxury = new BoardSpace("Luxury Tax",0,100,0,false,false,"weird");
-    static Player thimble = new Player("Thimble",board.getFirst());
-    static Player boat = new Player("Boat",board.getFirst());
-    static Player iron = new Player("Iron",board.getFirst());
-    static Player topHat = new Player("Top Hat",board.getFirst());
     public static int roll(){
         return (int)(Math.random()*6+1+Math.random()*6+1);
     }
@@ -55,12 +52,26 @@ public class Main {
         BoardSpace[] all = {Go,MediterraneanAvenue,CC1,BalticAvenue,Income,ReadingRR,OrientalAvenue,Ch1,VermontAvenue,ConnecticutAvenue,Jail,StCharlesPlace,ElectricCompany,StatesAvenue,VirginiaAvenue,PennsylvaniaRR,StJamesPlace,CC2,TennesseeAvenue,NewYorkAvenue,free,KentuckyAvenue,Ch2,IndianaAvenue,IllinoisAvenue,BORR,AtlanticAvenue,VentnorAvenue,WaterWorks,MarvinGardens,GoToJail,PacificAvenue,NorthCarolinaAvenue,CC3,PennsylvaniaAvenue,ShortLine,Ch3,ParkPlace,Luxury,Boardwalk};
         for (int i=all.length-1;i>=0;i--){
             Link<BoardSpace> add = new Link(all[i]);
-            board.insertFirst(add);
+            board.insertFirst(add.data);
         }
+        Player thimble = new Player("Thimble",board.getFirst());
+         Player boat = new Player("Boat",board.getFirst());
+         Player iron = new Player("Iron",board.getFirst());
+         Player topHat = new Player("Top Hat",board.getFirst());
         Player[] players = {thimble,boat,topHat,iron};
         for (int i=0;i<players.length;i++){
             Link<Player> add = new Link(players[i]);
-            pieces.insertFirst(add);
+            pieces.insertFirst(add.data);
         }
+        Game game = new Game(board, pieces);
+        game.printBox(Go,pieces,4);
+
     }
+
+    /*public void displayBoard(BoardSpace spot, Player[] players){
+            printBox(spot,players );
+    }
+
+     */
+
 }
