@@ -44,8 +44,8 @@ public class Game {
         setPlayers(players);
     }
 
-    public void move(int moves){
-        Link<BoardSpace> current = player.data.getPosition();
+    public void move(int moves, Link<Player> currentPlayer){
+        Link<BoardSpace> current = currentPlayer.data.getPosition();
         BoardSpace spot = current.data;
         for(int i=0; i<moves; i++){
             current = current.nextLink;

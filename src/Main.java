@@ -74,6 +74,7 @@ public class Main {
         }
         Game game = new Game(board, pieces);
         game.displayBoard(4,printBoard);
+        game.move(3,pieces.getFirst());
 
     }
 
