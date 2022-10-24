@@ -122,16 +122,46 @@ public class Game {
     }
     public void displayBoard(int numOfPlayers, CircularLinkedList<BoardSpace> printBoard){
         Link<BoardSpace> current = printBoard.getFirst();
-        printBox(numOfPlayers, 11, printBoard);
+        printBox(numOfPlayers, 11, current);
+        for(int i=0; i<11; i++){
+            current = current.nextLink;
+        }
+        printBox(numOfPlayers, 2, current);
+        current = current.nextLink.nextLink;
+        printBox(numOfPlayers, 2, current);
+        current = current.nextLink.nextLink;
+        printBox(numOfPlayers, 2, current);
+        current = current.nextLink.nextLink;
+        printBox(numOfPlayers, 2, current);
+        current = current.nextLink.nextLink;
+        printBox(numOfPlayers, 2, current);
+        current = current.nextLink.nextLink;
+        printBox(numOfPlayers, 2, current);
+        current = current.nextLink.nextLink;
+        printBox(numOfPlayers, 2, current);
+        current = current.nextLink.nextLink;
+        printBox(numOfPlayers, 2, current);
+        current = current.nextLink.nextLink;
+        printBox(numOfPlayers, 2, current);
+        current = current.nextLink.nextLink;
+        printBox(numOfPlayers, 11, current);
+
+
     }
-    public void printBox(int numOfPlayers, int numOnRow, CircularLinkedList<BoardSpace> printBoard) {
+    public void printBox(int numOfPlayers, int numOnRow, Link<BoardSpace> current) {
         String topRow = "";
         String secondRow = "";
         ArrayList<String> characters = new ArrayList<>();
         String thirdRow = "";
         int rowCounter = 0;
-        Link<BoardSpace> current = printBoard.getFirst();
+        String blanks = "";
         for (int z = 0; z < numOnRow; z++) {
+            if(numOnRow==2) {
+                for (int u = 0; u < (21 * 9)-1; u++) {
+                    blanks += " ";
+                }
+                blanks+="|";
+            }
             ArrayList<Player> onPosition = new ArrayList<>();
             if(rowCounter==0){
                 topRow+="|";
@@ -151,8 +181,9 @@ public class Game {
                 currentPlayer = currentPlayer.nextLink;
                 counter++;
             }
-            int distance = 20;//maxDistance for entire board spot
+            int distance = 21;//maxDistance for entire board spot
             for (int i = 0; i < distance; i++) {topRow += "-";}
+            topRow+=blanks;
             int midDistance = 20 - spot.getName().length();
             if(spot.getName().length()%2==1){secondRow+=" ";}
             for (int j = 0; j < midDistance / 2; j++) { //centers the name on the spot
@@ -161,6 +192,8 @@ public class Game {
             secondRow += spot.getName();
             for (int j = 0; j < midDistance / 2; j++) {secondRow += " ";}
             secondRow+="|";
+            secondRow+=blanks;//for the case of 2 rows
+
             for (int i = 0; i < onPosition.size(); i++) { //prints the players that are on the spot with name centered
                 Player currentPrint = onPosition.get(i);
                 int secondMidDistance = 20 - currentPrint.getName().length();
@@ -169,12 +202,12 @@ public class Game {
                 thirdRow += currentPrint.getName();
                 for (int j = 0; j < secondMidDistance / 2; j++) {thirdRow += " ";}
                 if(rowCounter==0) {
-                    System.out.println(thirdRow);
                     characters.add(thirdRow);
-                    thirdRow = "|";
+
+                    thirdRow+=blanks;
+                    thirdRow+="|";
                 }
                 else{
-                    System.out.println(thirdRow);
                     String newCharacters =  characters.get(i) + thirdRow;
                     characters.set(i, newCharacters);
                     thirdRow = "| ";
@@ -184,8 +217,12 @@ public class Game {
             for (int i = 0; i < (numOfPlayers - onPosition.size()); i++) { //adds extra spaces so all the spots have the same size
                 String extraMid = "|";
                 for (int j = 0; j < 20; j++) {extraMid += " ";}
-                if(rowCounter ==0) {characters.add(extraMid);}
+                if(rowCounter ==0) {
+                    characters.add(extraMid);
+                    extraMid+="|";
+                }
                 else{
+
                     String newCharacters=  characters.get(i) + extraMid;
                     characters.set(i, newCharacters);
                 }
