@@ -30,18 +30,13 @@ public class CircularLinkedList<T> {
     public void insertFirst(T newData){
         Link<T> newLink = new Link<T>(newData);
         if (isEmpty()){
-            newLink.nextLink = newLink;
             first=newLink;
             last=newLink;
         }
         else{
             newLink.nextLink = first;
-            Link<T> current = first;
-            while(current.nextLink != first) {
-                current = current.nextLink;
-            }
-            current.nextLink = newLink;
             first = newLink;
+            last.nextLink = first;
         }
     }
     public Link<T> find(Link<T> key){

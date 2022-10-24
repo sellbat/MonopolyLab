@@ -49,29 +49,32 @@ public class Main {
         return (int)(Math.random()*6+1+Math.random()*6+1);
     }
     public static void main(String[] args) {
+        CircularLinkedList<BoardSpace> printBoard = new CircularLinkedList<>();
         BoardSpace[] all = {Go,MediterraneanAvenue,CC1,BalticAvenue,Income,ReadingRR,OrientalAvenue,Ch1,VermontAvenue,ConnecticutAvenue,Jail,StCharlesPlace,ElectricCompany,StatesAvenue,VirginiaAvenue,PennsylvaniaRR,StJamesPlace,CC2,TennesseeAvenue,NewYorkAvenue,free,KentuckyAvenue,Ch2,IndianaAvenue,IllinoisAvenue,BORR,AtlanticAvenue,VentnorAvenue,WaterWorks,MarvinGardens,GoToJail,PacificAvenue,NorthCarolinaAvenue,CC3,PennsylvaniaAvenue,ShortLine,Ch3,ParkPlace,Luxury,Boardwalk};
         for (int i=all.length-1;i>=0;i--){
             Link<BoardSpace> add = new Link(all[i]);
             board.insertFirst(add.data);
         }
-        Player thimble = new Player("Thimble",board.getFirst());
-         Player boat = new Player("Boat",board.getFirst());
-         Player iron = new Player("Iron",board.getFirst());
-         Player topHat = new Player("Top Hat",board.getFirst());
+        BoardSpace[] allPrint = {free, KentuckyAvenue, Ch2, IndianaAvenue,IllinoisAvenue,BORR,AtlanticAvenue,VentnorAvenue,WaterWorks,MarvinGardens,GoToJail,NewYorkAvenue,PacificAvenue,TennesseeAvenue,NorthCarolinaAvenue,CC2,CC3,StJamesPlace,PennsylvaniaAvenue,PennsylvaniaRR,ShortLine,VirginiaAvenue,CC3,StatesAvenue,ParkPlace,ElectricCompany,Luxury,StCharlesPlace,Boardwalk,Jail,ConnecticutAvenue,VermontAvenue,Ch1,OrientalAvenue,ReadingRR,Income,BalticAvenue,CC1,MediterraneanAvenue,Go};
+        for (int i=all.length-1;i>=0;i--){
+            Link<BoardSpace> add = new Link(allPrint[i]);
+            printBoard.insertFirst(add.data);
+        }
+        Link<BoardSpace> freeSpot = new Link(free);
+        Link<BoardSpace> freeSpot2 = new Link(KentuckyAvenue);
+        Link<BoardSpace> freeSpot3 = new Link(Ch2);
+        Player thimble = new Player("Thimble", freeSpot);
+         Player boat = new Player("Boat",freeSpot);
+         Player iron = new Player("Iron",freeSpot2);
+         Player topHat = new Player("Top Hat",freeSpot3);
         Player[] players = {thimble,boat,topHat,iron};
         for (int i=0;i<players.length;i++){
             Link<Player> add = new Link(players[i]);
             pieces.insertFirst(add.data);
         }
         Game game = new Game(board, pieces);
-        game.printBox(Go,pieces,4);
+        game.displayBoard(4,printBoard);
 
     }
-
-    /*public void displayBoard(BoardSpace spot, Player[] players){
-            printBox(spot,players );
-    }
-
-     */
 
 }

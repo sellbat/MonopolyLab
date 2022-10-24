@@ -16,7 +16,7 @@ public class Game {
     }
 
     public CircularLinkedList<Player> getPlayers() {
-        return players;
+        return this.players;
     }
 
     public void setPlayers(CircularLinkedList<Player> players) {
@@ -120,63 +120,83 @@ public class Game {
         player.setTurnsInJail(0);
         player.setJailed(false);
     }
-    public static void printBox(BoardSpace spot, CircularLinkedList<Player> players, int numOfPlayers){
-        ArrayList<Player> onPosition = new ArrayList<>();
-        int counter = 0;
-        Link<Player> currentPlayer = players.getFirst();
-        for(int i=0; i<numOfPlayers ; i++){
-            System.out.println(currentPlayer.data.getName());
-            currentPlayer = currentPlayer.nextLink;
-        }
-        while(counter < numOfPlayers) {
-            System.out.println(currentPlayer.data.getName());
-            if (currentPlayer.data.getPosition().data.getName().equals(spot.getName())) {
-                onPosition.add(currentPlayer.data);
+    public void displayBoard(int numOfPlayers, CircularLinkedList<BoardSpace> printBoard){
+        Link<BoardSpace> current = printBoard.getFirst();
+        printBox(numOfPlayers, 11, printBoard);
+    }
+    public void printBox(int numOfPlayers, int numOnRow, CircularLinkedList<BoardSpace> printBoard) {
+        String topRow = "";
+        String secondRow = "";
+        ArrayList<String> characters = new ArrayList<>();
+        String thirdRow = "";
+        int rowCounter = 0;
+        Link<BoardSpace> current = printBoard.getFirst();
+        for (int z = 0; z < numOnRow; z++) {
+            ArrayList<Player> onPosition = new ArrayList<>();
+            if(rowCounter==0){
+                topRow+="|";
+                secondRow+="|";
+                thirdRow+="|";
             }
-            currentPlayer = currentPlayer.nextLink;
-            counter++;
-        }
+            BoardSpace spot = current.data;
+            int counter = 0;
+            Link<Player> currentPlayer = this.getPlayers().getFirst();
+            for (int i = 0; i < numOfPlayers; i++) {
+                currentPlayer = currentPlayer.nextLink;
+            }
+            while (counter < numOfPlayers) {
+                if (currentPlayer.data.getPosition().data == (spot)) {
+                    onPosition.add(currentPlayer.data);
+                }
+                currentPlayer = currentPlayer.nextLink;
+                counter++;
+            }
+            int distance = 20;//maxDistance for entire board spot
+            for (int i = 0; i < distance; i++) {topRow += "-";}
+            int midDistance = 20 - spot.getName().length();
+            if(spot.getName().length()%2==1){secondRow+=" ";}
+            for (int j = 0; j < midDistance / 2; j++) { //centers the name on the spot
+                secondRow += " ";
+            }
+            secondRow += spot.getName();
+            for (int j = 0; j < midDistance / 2; j++) {secondRow += " ";}
+            secondRow+="|";
+            for (int i = 0; i < onPosition.size(); i++) { //prints the players that are on the spot with name centered
+                Player currentPrint = onPosition.get(i);
+                int secondMidDistance = 20 - currentPrint.getName().length();
+                if(spot.getName().length()%2==0){thirdRow+=" ";}
+                for (int j = 0; j < secondMidDistance / 2; j++) {thirdRow += " ";}
+                thirdRow += currentPrint.getName();
+                for (int j = 0; j < secondMidDistance / 2; j++) {thirdRow += " ";}
+                if(rowCounter==0) {
+                    System.out.println(thirdRow);
+                    characters.add(thirdRow);
+                    thirdRow = "|";
+                }
+                else{
+                    System.out.println(thirdRow);
+                    String newCharacters =  characters.get(i) + thirdRow;
+                    characters.set(i, newCharacters);
+                    thirdRow = "| ";
+                }
 
-        int distance = 30;//maxDistance for entire board spot
-        String topRow = "|";
-        for(int i=0; i<distance; i++){
-            topRow+="-";
+            }
+            for (int i = 0; i < (numOfPlayers - onPosition.size()); i++) { //adds extra spaces so all the spots have the same size
+                String extraMid = "|";
+                for (int j = 0; j < 20; j++) {extraMid += " ";}
+                if(rowCounter ==0) {characters.add(extraMid);}
+                else{
+                    String newCharacters=  characters.get(i) + extraMid;
+                    characters.set(i, newCharacters);
+                }
+            }
+            rowCounter++;
+            current = current.nextLink;
         }
-        topRow+="|";
-
-        int midDistance = 30 - spot.getName().length();
-        String midRow ="|";
-        for(int j=0; j<midDistance/2; j++){ //centers the name on the spot
-            midRow+=" ";
-        }
-        midRow+= spot.getName();
-        for(int j=0; j<midDistance/2; j++){
-            midRow+=" ";
-        }
-        midRow+="|";
         System.out.println(topRow);
-        System.out.println(midRow);
-        for(int i=0; i<onPosition.size(); i++){ //prints the players that are on the spot with name centered
-            Player currentPrint = onPosition.get(i);
-            int secondMidDistance = 30 - currentPrint.getName().length();
-            String secondMidRow ="|";
-            for(int j=0; j<secondMidDistance/2; j++){
-                secondMidRow+=" ";
-            }
-            secondMidRow+= currentPrint.getName();
-            for(int j=0; j<secondMidDistance/2; j++){
-                secondMidRow+=" ";
-            }
-            secondMidRow+="|";
-            System.out.println(secondMidRow);
-        }
-        for(int i=0; i<(6- onPosition.size()) ; i++){ //adds extra spaces so all the spots have the same size
-            String extraMid = "|";
-            for(int j=0; j<30; j++){
-                extraMid+=" ";
-            }
-            extraMid += "|";
-            System.out.println(extraMid);
+        System.out.println(secondRow);
+        for(int i=0; i<characters.size(); i++){
+            System.out.println(characters.get(i));
         }
         System.out.println(topRow);
     }
