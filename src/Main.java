@@ -60,13 +60,11 @@ public class Main {
             Link<BoardSpace> add = new Link(allPrint[i]);
             printBoard.insertFirst(add.data);
         }
-        Link<BoardSpace> freeSpot = new Link(free);
-        Link<BoardSpace> freeSpot2 = new Link(KentuckyAvenue);
-        Link<BoardSpace> freeSpot3 = new Link(Ch2);
-        Player thimble = new Player("Thimble", freeSpot);
-         Player boat = new Player("Boat",freeSpot);
-         Player iron = new Player("Iron",freeSpot2);
-         Player topHat = new Player("Top Hat",freeSpot3);
+        Link<BoardSpace> GoSpot = new Link<>(Go);
+        Player thimble = new Player("Thimble", GoSpot);
+         Player boat = new Player("Boat",GoSpot);
+         Player iron = new Player("Iron",GoSpot);
+         Player topHat = new Player("Top Hat",GoSpot);
         Player[] players = {thimble,boat,topHat,iron};
         for (int i=0;i<players.length;i++){
             Link<Player> add = new Link(players[i]);

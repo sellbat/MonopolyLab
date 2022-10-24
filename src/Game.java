@@ -153,6 +153,7 @@ public class Game {
         String secondRow = "";
         ArrayList<String> characters = new ArrayList<>();
         String thirdRow = "";
+        String feeRow = "";
         int rowCounter = 0;
         String blanks = "";
         for (int z = 0; z < numOnRow; z++) {
@@ -167,6 +168,7 @@ public class Game {
                 topRow+="|";
                 secondRow+="|";
                 thirdRow+="|";
+                feeRow+="|";
             }
             BoardSpace spot = current.data;
             int counter = 0;
@@ -214,6 +216,21 @@ public class Game {
                 }
 
             }
+            int lastMidDistance = 20 - String.valueOf(spot.getCost()).length();
+            if(String.valueOf(spot.getCost()).length()%2==1){feeRow+=" ";}
+            for (int j = 0; j < lastMidDistance / 2; j++) { //centers the name on the spot
+                feeRow += " ";
+            }
+            if(spot.getCost() != 0){
+                feeRow += String.valueOf(spot.getCost());
+            }
+            else{
+                feeRow += " ";
+            }
+            for (int j = 0; j < lastMidDistance / 2; j++) {feeRow += " ";}
+            feeRow+="|";
+            feeRow+=blanks;
+
             for (int i = 0; i < (numOfPlayers - onPosition.size()); i++) { //adds extra spaces so all the spots have the same size
                 String extraMid = "|";
                 for (int j = 0; j < 20; j++) {extraMid += " ";}
@@ -235,6 +252,7 @@ public class Game {
         for(int i=0; i<characters.size(); i++){
             System.out.println(characters.get(i));
         }
+        System.out.println(feeRow);
         System.out.println(topRow);
     }
 
