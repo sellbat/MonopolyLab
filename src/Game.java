@@ -205,16 +205,18 @@ public class Game {
                 for (int j = 0; j < secondMidDistance / 2; j++) {thirdRow += " ";}
                 if(rowCounter==0) {
                     characters.add(thirdRow);
-
-                    thirdRow+=blanks;
                     thirdRow+="|";
+                    if(numOnRow==2){
+                        String newCharacters =  characters.get(i) + thirdRow;
+                        newCharacters+=blanks;
+                        characters.set(i, newCharacters);
+                    }
                 }
                 else{
                     String newCharacters =  characters.get(i) + thirdRow;
+                    newCharacters+=blanks;
                     characters.set(i, newCharacters);
-                    thirdRow = "| ";
                 }
-
             }
             int lastMidDistance = 20 - String.valueOf(spot.getCost()).length();
             if(String.valueOf(spot.getCost()).length()%2==1){feeRow+=" ";}
@@ -230,17 +232,19 @@ public class Game {
             for (int j = 0; j < lastMidDistance / 2; j++) {feeRow += " ";}
             feeRow+="|";
             feeRow+=blanks;
-
             for (int i = 0; i < (numOfPlayers - onPosition.size()); i++) { //adds extra spaces so all the spots have the same size
                 String extraMid = "|";
                 for (int j = 0; j < 20; j++) {extraMid += " ";}
                 if(rowCounter ==0) {
                     characters.add(extraMid);
-                    extraMid+="|";
+                    if(numOnRow==2){
+                        String newCharacters = characters.get(i) + thirdRow;
+                        newCharacters+=blanks;
+                        characters.set(i, newCharacters);
+                    }
                 }
                 else{
-
-                    String newCharacters=  characters.get(i) + extraMid;
+                    String newCharacters = characters.get(i) + extraMid;
                     characters.set(i, newCharacters);
                 }
             }
