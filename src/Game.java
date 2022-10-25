@@ -121,8 +121,6 @@ public class Game {
         player.setJailed(false);
     }
     public void displayBoard(int numOfPlayers, CircularLinkedList<BoardSpace> printBoard){
-        System.out.println("┌------------------┐┌------------------┐┌------------------┐┌------------------┐┌------------------┐┌------------------┐┌------------------┐┌------------------┐┌------------------┐┌------------------┐┌------------------┐");
-        System.out.println("|  Free            || Kentucky         ||      Chance      ||  Indiana Avenue  ||  B&O Railroad    || ");
         Link<BoardSpace> current = printBoard.getFirst();
         printBox(numOfPlayers, 11, current);
         for(int i=0; i<11; i++){
@@ -149,23 +147,6 @@ public class Game {
         printBox(numOfPlayers, 11, current);
 
     }
-
-    /*public String findPlayerSymbols(int numOfPlayers, String spotName){
-        ArrayList<String> symbolPlayers = new ArrayList<>();
-        Link<Player> currentPlayer = getPlayers().getFirst();
-        for(int i=0; i<numOfPlayers; i++) {
-            if (currentPlayer.data.getPosition().data.getName().equals(spotName)) {
-                symbolPlayers.add(currentPlayer.data.getSymbol());
-                currentPlayer = currentPlayer.nextLink;
-            }
-        }
-        String playerSymbols = "";
-        for(int i=0; i<symbolPlayers.size(); i++){
-            playerSymbols += " " + symbolPlayers.get(i);
-        }
-    }
-    */
-
     public void printBox(int numOfPlayers, int numOnRow, Link<BoardSpace> current) {
         String topRow = "|";
         String secondRow = "|";
@@ -227,6 +208,8 @@ public class Game {
                 for (int j = 0; j < secondMidDistance / 2; j++) {thirdRow += " ";}
                 if(rowCounter==numOnRow){
                     thirdRow+="|";
+                    String newCharacters = characters.get(i) + blanks + thirdRow;
+                    characters.set(i, newCharacters);
                 }
                 if(rowCounter==0) {
                     characters.add(thirdRow);
@@ -254,7 +237,7 @@ public class Game {
             for (int j = 0; j < lastMidDistance / 2; j++) {feeRow += " ";}
             feeRow+="|";
             feeRow+=blanks;
-            for (int i = 0; i < (numOfPlayers - onPosition.size()); i++) { //adds extra spaces so all the spots have the same size
+            for (int i = 0; i < (numOfPlayers - onPosition.size()); i++) { //adds extra spaces so all the spots have the same length
                 String extraMid = "|";
                 for (int j = 0; j < 20; j++) {extraMid += " ";}
                 if(rowCounter ==0 || rowCounter==numOnRow) {
@@ -271,7 +254,7 @@ public class Game {
                     }
                 }
                 else{
-                    String newCharacters = "";
+                    String newCharacters;
                     if(numOnRow==2){
                         newCharacters = characters.get(i) + blanks.substring(0,blanks.length()-1) + extraMid + "|";
                     }
@@ -287,7 +270,12 @@ public class Game {
         System.out.println(topRow);
         System.out.println(secondRow);
         for(int i=0; i<characters.size(); i++){
-            System.out.println(characters.get(i));
+            if(characters.get(i).substring(characters.get(i).length()-1).equals("|")){
+                System.out.println(characters.get(i));
+            }
+            else {
+                System.out.println(characters.get(i) + "|");
+            }
         }
         System.out.println(feeRow);
         System.out.println(topRow);
