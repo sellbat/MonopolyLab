@@ -60,13 +60,15 @@ public class Main {
             Link<BoardSpace> add = new Link(allPrint[i]);
             printBoard.insertFirst(add.data);
         }
-        Link<BoardSpace> GoSpot = new Link<>(Jail);
-        Link<BoardSpace> GoSpot2 = new Link<>(ShortLine);
-        Player thimble = new Player("Thimble", GoSpot2, "P1");
-         Player boat = new Player("Boat",GoSpot2, "P2");
-         Player iron = new Player("Iron",GoSpot2, "P3");
-         Player topHat = new Player("Top Hat",GoSpot2, "P4");
-        Player zack = new Player("Top Hat",GoSpot2, "P5");
+        Link<BoardSpace> GoSpot = new Link<>(Go);
+        Link<BoardSpace> GoSpot2 = new Link<>(NewYorkAvenue);
+        Link<BoardSpace> GoSpot3 = new Link<>(KentuckyAvenue);
+
+        Player thimble = new Player("Thimble", GoSpot, "P1");
+         Player boat = new Player("Boat",GoSpot, "P2");
+         Player iron = new Player("Iron",GoSpot, "P3");
+         Player topHat = new Player("Top Hat",GoSpot, "P4");
+        Player zack = new Player("Top Hat",GoSpot, "P5");
         Player[] players = {thimble,boat,topHat,iron,zack};
         for (int i=0;i<players.length;i++){
             Link<Player> add = new Link(players[i]);

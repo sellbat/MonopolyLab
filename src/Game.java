@@ -212,7 +212,12 @@ public class Game {
                     characters.set(i, newCharacters);
                 }
                 if(rowCounter==0) {
-                    characters.add(thirdRow);
+                    if(numOnRow==2){
+                        characters.add(thirdRow + "|");
+                    }
+                    else {
+                        characters.add(thirdRow);
+                    }
                 }
                 else{
                     String newCharacters = characters.get(i) + blanks + thirdRow;
@@ -237,29 +242,26 @@ public class Game {
             for (int j = 0; j < lastMidDistance / 2; j++) {feeRow += " ";}
             feeRow+="|";
             feeRow+=blanks;
-            for (int i = 0; i < (numOfPlayers - onPosition.size()); i++) { //adds extra spaces so all the spots have the same length
+            for (int i = onPosition.size(); i < (numOfPlayers); i++) { //adds extra spaces so all the spots have the same length
                 String extraMid = "|";
                 for (int j = 0; j < 20; j++) {extraMid += " ";}
-                if(rowCounter ==0 || rowCounter==numOnRow) {
+                if(rowCounter==numOnRow){
+                    extraMid+="|";
+                    String newCharacters = characters.get(i) + blanks + extraMid;
+                    characters.set(i, newCharacters);
+                }
+                if(rowCounter==0) {
                     if(numOnRow==2){
                         characters.add(extraMid + "|");
                     }
                     else {
-                        if(rowCounter==numOnRow){
-                            characters.add(extraMid + "|");
-                        }
-                        else {
-                            characters.add(extraMid);
-                        }
+                        characters.add(extraMid);
                     }
                 }
                 else{
-                    String newCharacters;
+                    String newCharacters = characters.get(i) + blanks + extraMid;
                     if(numOnRow==2){
-                        newCharacters = characters.get(i) + blanks.substring(0,blanks.length()-1) + extraMid + "|";
-                    }
-                    else {
-                        newCharacters = characters.get(i) + extraMid;
+                        newCharacters = characters.get(i) +blanks.substring(0,blanks.length()-1) + extraMid;
                     }
                     characters.set(i, newCharacters);
                 }
@@ -270,12 +272,7 @@ public class Game {
         System.out.println(topRow);
         System.out.println(secondRow);
         for(int i=0; i<characters.size(); i++){
-            if(characters.get(i).substring(characters.get(i).length()-1).equals("|")){
-                System.out.println(characters.get(i));
-            }
-            else {
-                System.out.println(characters.get(i) + "|");
-            }
+            System.out.println(characters.get(i) + "|");
         }
         System.out.println(feeRow);
         System.out.println(topRow);
