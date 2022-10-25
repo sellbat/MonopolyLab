@@ -121,6 +121,8 @@ public class Game {
         player.setJailed(false);
     }
     public void displayBoard(int numOfPlayers, CircularLinkedList<BoardSpace> printBoard){
+        System.out.println("┌------------------┐┌------------------┐┌------------------┐┌------------------┐┌------------------┐┌------------------┐┌------------------┐┌------------------┐┌------------------┐┌------------------┐┌------------------┐");
+        System.out.println("|  Free            || Kentucky         ||      Chance      ||  Indiana Avenue  ||  B&O Railroad    || ");
         Link<BoardSpace> current = printBoard.getFirst();
         printBox(numOfPlayers, 11, current);
         for(int i=0; i<11; i++){
@@ -146,37 +148,45 @@ public class Game {
         current = current.nextLink.nextLink;
         printBox(numOfPlayers, 11, current);
 
-
     }
-    public void printBox(int numOfPlayers, int numOnRow, Link<BoardSpace> current) {
-        String topRow = "";
-        String secondRow = "";
-        ArrayList<String> characters = new ArrayList<>();
-        String thirdRow = "";
-        String feeRow = "";
-        int rowCounter = 0;
-        String blanks = "";
-        for (int z = 0; z < numOnRow; z++) {
-            if(numOnRow==2) {
-                for (int u = 0; u < (21 * 9)-1; u++) {
-                    blanks += " ";
-                }
-                blanks+="|";
-            }
-            ArrayList<Player> onPosition = new ArrayList<>();
-            if(rowCounter==0){
-                topRow+="|";
-                secondRow+="|";
-                thirdRow+="|";
-                feeRow+="|";
-            }
-            BoardSpace spot = current.data;
-            int counter = 0;
-            Link<Player> currentPlayer = this.getPlayers().getFirst();
-            for (int i = 0; i < numOfPlayers; i++) {
+
+    /*public String findPlayerSymbols(int numOfPlayers, String spotName){
+        ArrayList<String> symbolPlayers = new ArrayList<>();
+        Link<Player> currentPlayer = getPlayers().getFirst();
+        for(int i=0; i<numOfPlayers; i++) {
+            if (currentPlayer.data.getPosition().data.getName().equals(spotName)) {
+                symbolPlayers.add(currentPlayer.data.getSymbol());
                 currentPlayer = currentPlayer.nextLink;
             }
+        }
+        String playerSymbols = "";
+        for(int i=0; i<symbolPlayers.size(); i++){
+            playerSymbols += " " + symbolPlayers.get(i);
+        }
+    }
+    */
+
+    public void printBox(int numOfPlayers, int numOnRow, Link<BoardSpace> current) {
+        String topRow = "|";
+        String secondRow = "|";
+        ArrayList<String> characters = new ArrayList<>();
+        String thirdRow = "| ";
+        String feeRow = "|";
+        int rowCounter = 0;
+        int max = 25;
+        for (int z = 0; z < numOnRow; z++) {
+            String blanks = "";
+            if(numOnRow==2) { //blanks for if there is only two rows
+                for (int u = 0; u < (21 * 9); u++) { //21 blanks 9 times for the amount in between the two rows
+                    blanks += " ";
+                }
+            }
+            BoardSpace spot = current.data;
+            ArrayList<Player> onPosition = new ArrayList<>();//amount of player on the spot
+            int counter = 0;
+            Link<Player> currentPlayer = this.getPlayers().getFirst();
             while (counter < numOfPlayers) {
+                //adds the players that are on the spot
                 if (currentPlayer.data.getPosition().data == (spot)) {
                     onPosition.add(currentPlayer.data);
                 }
@@ -184,8 +194,16 @@ public class Game {
                 counter++;
             }
             int distance = 21;//maxDistance for entire board spot
+            if(numOnRow==2&&rowCounter!=0){topRow+="|";}
+            //adds the bar if its the second version of the top row
             for (int i = 0; i < distance; i++) {topRow += "-";}
-            topRow+=blanks;
+            if(numOnRow==2) {//fixes spacing error in row lengths
+                String topBlanks = blanks.substring(0, blanks.length() - 1);
+                topRow += topBlanks;
+            }
+            else{
+                topRow+=blanks;
+            }
             int midDistance = 20 - spot.getName().length();
             if(spot.getName().length()%2==1){secondRow+=" ";}
             for (int j = 0; j < midDistance / 2; j++) { //centers the name on the spot
@@ -195,28 +213,32 @@ public class Game {
             for (int j = 0; j < midDistance / 2; j++) {secondRow += " ";}
             secondRow+="|";
             secondRow+=blanks;//for the case of 2 rows
-
+            if(numOnRow==2){
+                secondRow = secondRow.substring(0,secondRow.length()-1);
+                if(rowCounter==0) {
+                    secondRow += "|";
+                }
+            }
             for (int i = 0; i < onPosition.size(); i++) { //prints the players that are on the spot with name centered
                 Player currentPrint = onPosition.get(i);
                 int secondMidDistance = 20 - currentPrint.getName().length();
-                if(spot.getName().length()%2==0){thirdRow+=" ";}
                 for (int j = 0; j < secondMidDistance / 2; j++) {thirdRow += " ";}
                 thirdRow += currentPrint.getName();
                 for (int j = 0; j < secondMidDistance / 2; j++) {thirdRow += " ";}
+                if(rowCounter==numOnRow){
+                    thirdRow+="|";
+                }
                 if(rowCounter==0) {
                     characters.add(thirdRow);
-                    thirdRow+="|";
-                    if(numOnRow==2){
-                        String newCharacters =  characters.get(i) + thirdRow;
-                        newCharacters+=blanks;
-                        characters.set(i, newCharacters);
-                    }
                 }
                 else{
-                    String newCharacters =  characters.get(i) + thirdRow;
-                    newCharacters+=blanks;
+                    String newCharacters = characters.get(i) + blanks + thirdRow;
+                    if(numOnRow==2){
+                        newCharacters = characters.get(i) +blanks.substring(0,blanks.length()-1) + thirdRow;
+                    }
                     characters.set(i, newCharacters);
                 }
+                thirdRow="| ";
             }
             int lastMidDistance = 20 - String.valueOf(spot.getCost()).length();
             if(String.valueOf(spot.getCost()).length()%2==1){feeRow+=" ";}
@@ -235,16 +257,27 @@ public class Game {
             for (int i = 0; i < (numOfPlayers - onPosition.size()); i++) { //adds extra spaces so all the spots have the same size
                 String extraMid = "|";
                 for (int j = 0; j < 20; j++) {extraMid += " ";}
-                if(rowCounter ==0) {
-                    characters.add(extraMid);
+                if(rowCounter ==0 || rowCounter==numOnRow) {
                     if(numOnRow==2){
-                        String newCharacters = characters.get(i) + thirdRow;
-                        newCharacters+=blanks;
-                        characters.set(i, newCharacters);
+                        characters.add(extraMid + "|");
+                    }
+                    else {
+                        if(rowCounter==numOnRow){
+                            characters.add(extraMid + "|");
+                        }
+                        else {
+                            characters.add(extraMid);
+                        }
                     }
                 }
                 else{
-                    String newCharacters = characters.get(i) + extraMid;
+                    String newCharacters = "";
+                    if(numOnRow==2){
+                        newCharacters = characters.get(i) + blanks.substring(0,blanks.length()-1) + extraMid + "|";
+                    }
+                    else {
+                        newCharacters = characters.get(i) + extraMid;
+                    }
                     characters.set(i, newCharacters);
                 }
             }

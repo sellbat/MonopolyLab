@@ -55,23 +55,25 @@ public class Main {
             Link<BoardSpace> add = new Link(all[i]);
             board.insertFirst(add.data);
         }
-        BoardSpace[] allPrint = {free, KentuckyAvenue, Ch2, IndianaAvenue,IllinoisAvenue,BORR,AtlanticAvenue,VentnorAvenue,WaterWorks,MarvinGardens,GoToJail,NewYorkAvenue,PacificAvenue,TennesseeAvenue,NorthCarolinaAvenue,CC2,CC3,StJamesPlace,PennsylvaniaAvenue,PennsylvaniaRR,ShortLine,VirginiaAvenue,CC3,StatesAvenue,ParkPlace,ElectricCompany,Luxury,StCharlesPlace,Boardwalk,Jail,ConnecticutAvenue,VermontAvenue,Ch1,OrientalAvenue,ReadingRR,Income,BalticAvenue,CC1,MediterraneanAvenue,Go};
+        BoardSpace[] allPrint = {free, KentuckyAvenue, Ch2, IndianaAvenue,IllinoisAvenue,BORR,AtlanticAvenue,VentnorAvenue,WaterWorks,MarvinGardens,GoToJail,NewYorkAvenue,PacificAvenue,TennesseeAvenue,NorthCarolinaAvenue,CC2,CC3,StJamesPlace,PennsylvaniaAvenue,PennsylvaniaRR,ShortLine,VirginiaAvenue,Ch3,StatesAvenue,ParkPlace,ElectricCompany,Luxury,StCharlesPlace,Boardwalk,Jail,ConnecticutAvenue,VermontAvenue,Ch1,OrientalAvenue,ReadingRR,Income,BalticAvenue,CC1,MediterraneanAvenue,Go};
         for (int i=all.length-1;i>=0;i--){
             Link<BoardSpace> add = new Link(allPrint[i]);
             printBoard.insertFirst(add.data);
         }
-        Link<BoardSpace> GoSpot = new Link<>(Go);
-        Player thimble = new Player("Thimble", GoSpot);
-         Player boat = new Player("Boat",GoSpot);
-         Player iron = new Player("Iron",GoSpot);
-         Player topHat = new Player("Top Hat",GoSpot);
-        Player[] players = {thimble,boat,topHat,iron};
+        Link<BoardSpace> GoSpot = new Link<>(Jail);
+        Link<BoardSpace> GoSpot2 = new Link<>(ShortLine);
+        Player thimble = new Player("Thimble", GoSpot2, "P1");
+         Player boat = new Player("Boat",GoSpot2, "P2");
+         Player iron = new Player("Iron",GoSpot2, "P3");
+         Player topHat = new Player("Top Hat",GoSpot2, "P4");
+        Player zack = new Player("Top Hat",GoSpot2, "P5");
+        Player[] players = {thimble,boat,topHat,iron,zack};
         for (int i=0;i<players.length;i++){
             Link<Player> add = new Link(players[i]);
             pieces.insertFirst(add.data);
         }
         Game game = new Game(board, pieces);
-        game.displayBoard(4,printBoard);
+        game.displayBoard(5,printBoard);
         game.move(3,pieces.getFirst());
 
     }

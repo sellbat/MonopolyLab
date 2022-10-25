@@ -8,6 +8,17 @@ public class Player {
     private Boolean jailed;
     private int turnsInJail;
     private ArrayList<BoardSpace> properties;
+    private String symbol;
+
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
 
     public String getName() {
         return this.playerName;
@@ -57,7 +68,7 @@ public class Player {
         this.properties = properties;
     }
 
-    public Player(String playerName, Link<BoardSpace> start){
+    public Player(String playerName, Link<BoardSpace> start, String symbol){
         setMoney(1500.00);
         setName(playerName);
         ArrayList<BoardSpace> properties = new ArrayList<>();
@@ -65,5 +76,6 @@ public class Player {
         setPosition(start);
         setJailed(false);
         setTurnsInJail(0);
+        setSymbol(symbol);
     }
 }
