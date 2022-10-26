@@ -130,6 +130,9 @@ public class Game {
             spot.getOwner().setMoney(spot.getOwner().getMoney() + price);
             player.setMoney(player.getMoney() - price);
         }
+        else {
+            player.setMoney(player.getMoney()-spot.getFee());
+        }
     }
     public void buy(BoardSpace spot, Player player){
         Scanner input = new Scanner(System.in);
