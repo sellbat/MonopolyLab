@@ -1,8 +1,11 @@
 import javax.print.attribute.standard.OrientationRequested;
 import java.security.PKCS12Attribute;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
+    static Game game;
     static BoardSpace MediterraneanAvenue = new BoardSpace("Mediterranean Avenue",60,2,30,true,false,"brown");
     static BoardSpace BalticAvenue = new BoardSpace("Baltic Avenue",60,4,30,true,false,"brown");
     static BoardSpace ReadingRR = new BoardSpace("Reading RR",200,25,30,true,false,"rail");
@@ -49,6 +52,110 @@ public class Main {
 
         return (int)(Math.random()*6+1);
     }
+    public static void premove(Link<Player> current){
+        Scanner input= new Scanner(System.in);
+        if (!current.data.getProperties().isEmpty()) {
+            System.out.println("Would you like to sell any of your properties?");
+            String seller = input.next();
+            if (seller.equals("yes") || seller.equals("Yes")) {
+                System.out.println("Select which property by number");
+                for (int i=0;i<current.data.getProperties().size();i++){
+                    System.out.println(i+1+": "+current.data.getProperties().get(i).getName());
+                }
+                int sold = input.nextInt()-1;
+                game.sell(current.data.getProperties().get(sold),current.data);
+                premove(current);
+            }
+            System.out.println("Would you like to mortgage any of your properties?");
+            String morter = input.next();
+            if (morter.equals("yes") || morter.equals("Yes")) {
+                System.out.println("Select which property by number");
+                boolean any = false;
+                for (int i=0;i<current.data.getProperties().size();i++){
+                    if (!current.data.getProperties().get(i).isMortgaged()) {
+                        any=true;
+                        System.out.println(i + 1 + ": " + current.data.getProperties().get(i).getName());
+                    }
+                }
+                if (any) {
+                    int mortgaged = input.nextInt() - 1;
+                    game.mortgage(current.data.getProperties().get(mortgaged), current.data);
+                    premove(current);
+                }
+                else {
+                    System.out.println("You have no mortgagable land");
+                    premove(current);
+                }
+            }
+            System.out.println("Would you like to unmortgage any of your properties?");
+            String unmorter = input.next();
+            if (unmorter.equals("yes") || unmorter.equals("Yes")) {
+                System.out.println("Select which property by number");
+                boolean any = false;
+                for (int i=0;i<current.data.getProperties().size();i++){
+                    if (current.data.getProperties().get(i).isMortgaged()) {
+                        any=true;
+                        System.out.println(i + 1 + ": " + current.data.getProperties().get(i).getName());
+                    }
+                }
+                if (any) {
+                    int unmortgaged = input.nextInt() - 1;
+                    game.unMortgage(current.data.getProperties().get(unmortgaged), current.data);
+                    premove(current);
+                }
+                else {
+                    System.out.println("You have no unmortgagable land");
+                    premove(current);
+                }
+            }
+            System.out.println("Would you like to upgrade any of your properties?");
+            String upgrader = input.next();
+            if (upgrader.equals("yes") || upgrader.equals("Yes")) {
+                int browns=1;
+                int lightBlues=0;
+                int pinks=0;
+                int oranges=0;
+                int reds=0;
+                int yellows=0;
+                int greens=0;
+                int darkBlues=1;
+                int[] colors ={browns,lightBlues,pinks,oranges,reds,yellows,greens,darkBlues};
+                for (int i=0;i<current.data.getProperties().size();i++){
+
+                    String color = current.data.getProperties().get(i).getColor();
+                    if (color.equals("brown")){
+                        browns++;
+                    }
+                    if (color.equals("light blue")){
+                        lightBlues++;
+                    }
+                    if (color.equals("pink")){
+                        pinks++;
+                    }
+                    if (color.equals("orange")){
+                        oranges++;
+                    }
+                    if (color.equals("red")){
+                        reds++;
+                    }
+                    if (color.equals("yellow")){
+                        yellows++;
+                    }
+                    if (color.equals("green")){
+                        greens++;
+                    }
+                    if (color.equals("dark blue")){
+                        darkBlues++;
+                    }
+                }
+                for (int i=0;i<colors.length;i++){
+                    if (colors[i]==3){
+
+                    }
+                }
+            }
+        }
+    }
     public static void main(String[] args) {
         CircularLinkedList<BoardSpace> printBoard = new CircularLinkedList<>();
         BoardSpace[] all = {Go,MediterraneanAvenue,CC1,BalticAvenue,Income,ReadingRR,OrientalAvenue,Ch1,VermontAvenue,ConnecticutAvenue,Jail,StCharlesPlace,ElectricCompany,StatesAvenue,VirginiaAvenue,PennsylvaniaRR,StJamesPlace,CC2,TennesseeAvenue,NewYorkAvenue,free,KentuckyAvenue,Ch2,IndianaAvenue,IllinoisAvenue,BORR,AtlanticAvenue,VentnorAvenue,WaterWorks,MarvinGardens,GoToJail,PacificAvenue,NorthCarolinaAvenue,CC3,PennsylvaniaAvenue,ShortLine,Ch3,ParkPlace,Luxury,Boardwalk};
@@ -72,7 +179,7 @@ public class Main {
             Link<Player> add = new Link(players[i]);
             pieces.insertFirst(add.data);
         }
-        Game game = new Game(board, pieces);
+        game = new Game(board, pieces);
         game.displayBoard(4,printBoard);
         game.move(10,pieces.getFirst(), board);
         game.displayBoard(4,printBoard);
