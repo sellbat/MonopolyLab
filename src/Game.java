@@ -39,6 +39,7 @@ public class Game {
     public void move(int moves, Link<Player> player, CircularLinkedList<BoardSpace> board){
         Player currentPlayer = player.data;
         Link<BoardSpace> currentPosition = board.find(currentPlayer.getPosition());
+        System.out.println(currentPlayer.getName() + "'s current balance is: $" + currentPlayer.getMoney());
         if(currentPlayer.getJailed()) {
             currentPlayer.setTurnsInJail(currentPlayer.getTurnsInJail()-1);
             Scanner input = new Scanner(System.in);
@@ -47,7 +48,7 @@ public class Game {
             if (ans.equals("yes") || ans.equals("Yes")) {
                 currentPlayer.setMoney(currentPlayer.getMoney()-50);
                 escapeJail(currentPlayer);
-                System.out.println(currentPlayer.getName() + "'s turn has ended");
+                System.out.println(currentPlayer.getName() + "'s turn has ended. He has escaped from jail");
                 return;
             }
             if(currentPlayer.getTurnsInJail()==0){
@@ -57,6 +58,7 @@ public class Game {
                 //add in diceroll and new turn
             }
             else{
+                System.out.println(currentPlayer.getName() + "'s has " + currentPlayer.getTurnsInJail() + " left");
                 System.out.println(currentPlayer.getName() + "'s turn has ended");
                 return;
             }

@@ -73,8 +73,11 @@ public class Main {
         }
         Game game = new Game(board, pieces);
         game.displayBoard(4,printBoard);
-        game.move(3,pieces.getFirst(), board);
+        game.move(10,pieces.getFirst(), board);
         game.displayBoard(4,printBoard);
+        game.move(3, pieces.getFirst(), board);
+        game.displayBoard(4, printBoard);
+        game.move(3, pieces.getFirst(), board);
 
     }
 
