@@ -35,7 +35,10 @@ public class Game {
         setMap(map);
         setPlayers(players);
     }
+    public static int roll(){
 
+        return (int)(Math.random()*6+1);
+    }
     public void move(int moves, Link<Player> player, CircularLinkedList<BoardSpace> board){
         Player currentPlayer = player.data;
         Link<BoardSpace> currentPosition = board.find(currentPlayer.getPosition());
@@ -43,24 +46,32 @@ public class Game {
         if(currentPlayer.getJailed()) {
             currentPlayer.setTurnsInJail(currentPlayer.getTurnsInJail()-1);
             Scanner input = new Scanner(System.in);
-            System.out.println("Would you like to pay 50$ to the banker to escape jail?");
-            String ans = input.next();
-            if (ans.equals("yes") || ans.equals("Yes")) {
-                currentPlayer.setMoney(currentPlayer.getMoney()-50);
-                escapeJail(currentPlayer);
-                System.out.println(currentPlayer.getName() + "'s turn has ended. He has escaped from jail");
-                return;
-            }
             if(currentPlayer.getTurnsInJail()==0){
                 escapeJail(currentPlayer);
                 System.out.println("You are now free after 3 turns in jail");
-                currentPlayer.setMoney(currentPlayer.getMoney()-50);
                 //add in diceroll and new turn
             }
-            else{
-                System.out.println(currentPlayer.getName() + "'s has " + currentPlayer.getTurnsInJail() + " left");
-                System.out.println(currentPlayer.getName() + "'s turn has ended");
-                return;
+            else {
+                System.out.println("Would you like to pay 50$ to the banker to escape jail?");
+                String ans = input.next();
+                if (ans.equals("yes") || ans.equals("Yes")) {
+                    currentPlayer.setMoney(currentPlayer.getMoney()-50);
+                    escapeJail(currentPlayer);
+                    System.out.println(currentPlayer.getName() + " has escaped from jail");
+                }
+                else{
+                    int r1 = roll();
+                    int r2 = roll();
+                    if (r1==r2){
+                        escapeJail(currentPlayer);
+                        System.out.println(currentPlayer.getName() + " has escaped from jail by rolling doubles");
+                    }
+                    else {
+                        System.out.println(currentPlayer.getName() + "'s has " + currentPlayer.getTurnsInJail() + " left");
+                        System.out.println(currentPlayer.getName() + "'s turn has ended");
+                        return;
+                    }
+                }
             }
         }
         for(int i=0; i<moves; i++){
@@ -75,7 +86,7 @@ public class Game {
             if(spot.getName().equals("Go To Jail")){
                 currentPlayer.setJailed(true);
                 currentPlayer.setTurnsInJail(3);
-                currentPlayer.setPosition(map.getLast()); //if last is the jail cell
+                currentPlayer.setPosition(map.getFirst().nextLink.nextLink.nextLink.nextLink.nextLink.nextLink.nextLink.nextLink.nextLink.nextLink); //if last is the jail cell
                 System.out.println(currentPlayer.getName() + "'s turn has ended");
             }
             if(spot.getFee()>0){
@@ -98,8 +109,27 @@ public class Game {
 
 
     public void pay(BoardSpace spot, Player player){
-        player.setMoney(player.getMoney() - spot.getFee());
-        spot.getOwner().setMoney(spot.getOwner().getMoney() + spot.getFee());
+        int price = spot.getFee();
+        if (!spot.getColor().equals("weird")){
+            int propertyCount = 1;
+            int maxPropertyCount = 3;
+            for (int i=0;i<spot.getOwner().getProperties().size();i++){
+                if (spot.getOwner().getProperties().get(i).getColor().equals(spot.getColor())){
+                    propertyCount++;
+                }
+            }
+            if (spot.getColor().equals("brown")||spot.getColor().equals("dark blue")){
+                maxPropertyCount=2;
+            }
+            if (maxPropertyCount==propertyCount){
+                price=price*2;
+                for (int i=0;i<spot.getHouseNum();i++){
+                    price=price*3;
+                }
+            }
+            spot.getOwner().setMoney(spot.getOwner().getMoney() + price);
+            player.setMoney(player.getMoney() - price);
+        }
     }
     public void buy(BoardSpace spot, Player player){
         Scanner input = new Scanner(System.in);

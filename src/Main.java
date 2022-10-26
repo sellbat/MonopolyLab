@@ -46,7 +46,8 @@ public class Main {
     static BoardSpace Ch3 = new BoardSpace("Chance",0,0,0,false,false,"weird");
     static BoardSpace Luxury = new BoardSpace("Luxury Tax",0,100,0,false,false,"weird");
     public static int roll(){
-        return (int)(Math.random()*6+1+Math.random()*6+1);
+
+        return (int)(Math.random()*6+1);
     }
     public static void main(String[] args) {
         CircularLinkedList<BoardSpace> printBoard = new CircularLinkedList<>();

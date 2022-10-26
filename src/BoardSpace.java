@@ -9,6 +9,7 @@ public class BoardSpace {
     private String name;
 
     private Player owner;
+    private int houseNum;
 
     public BoardSpace(String name,int cost, int fee, int sell, boolean purchasable, boolean jail, String color){
         this.name=name;
@@ -18,6 +19,15 @@ public class BoardSpace {
         this.sell=cost/2;
         this.purchasable=purchasable;
         this.jail=jail;
+        this.houseNum=0;
+    }
+
+    public int getHouseNum() {
+        return houseNum;
+    }
+
+    public void setHouseNum(int houseNum) {
+        this.houseNum = houseNum;
     }
 
     public String getName() {
