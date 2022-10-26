@@ -32,21 +32,25 @@ public class Game {
 
 
     public Game(CircularLinkedList<BoardSpace> map, CircularLinkedList<Player> players){
+        //constructor for the game
         setMap(map);
         setPlayers(players);
     }
     public static int roll(){
-
+        //returns integer between 1 and 6
         return (int)(Math.random()*6+1);
     }
     public void move(int moves, Link<Player> player, CircularLinkedList<BoardSpace> board){
         Player currentPlayer = player.data;
+        //finds current position in the game map
         Link<BoardSpace> currentPosition = board.find(currentPlayer.getPosition());
         System.out.println(currentPlayer.getName() + "'s current balance is: $" + currentPlayer.getMoney());
         if(currentPlayer.getJailed()) {
             currentPlayer.setTurnsInJail(currentPlayer.getTurnsInJail()-1);
+            //decrements the players turns in jail
             Scanner input = new Scanner(System.in);
             if(currentPlayer.getTurnsInJail()==0){
+                //if final turn in jail
                 escapeJail(currentPlayer);
                 System.out.println("You are now free after 3 turns in jail");
                 //add in diceroll and new turn
@@ -62,6 +66,7 @@ public class Game {
                 else{
                     int r1 = roll();
                     int r2 = roll();
+                    //if player rolls doubles, he escapes jail
                     if (r1==r2){
                         escapeJail(currentPlayer);
                         System.out.println(currentPlayer.getName() + " has escaped from jail by rolling doubles");
@@ -69,6 +74,7 @@ public class Game {
                     else {
                         System.out.println(currentPlayer.getName() + "'s has " + currentPlayer.getTurnsInJail() + " left");
                         System.out.println(currentPlayer.getName() + "'s turn has ended");
+                        //exits method
                         return;
                     }
                 }
@@ -76,9 +82,11 @@ public class Game {
         }
         for(int i=0; i<moves; i++){
             currentPlayer.setPosition(currentPosition.nextLink);
-            if(currentPlayer.getPosition()==map.getFirst() && !currentPlayer.getJailed()){ //adds 200 to balance for passing Go
+            if(currentPlayer.getPosition()==map.getFirst() && !currentPlayer.getJailed()){
+                //adds 200 to balance for passing Go
                 currentPlayer.setMoney(currentPlayer.getMoney()+200);
             }
+            //sets current position to the position after adding moves
             currentPosition = currentPosition.nextLink;
         }
         BoardSpace spot = player.data.getPosition().data;
@@ -86,14 +94,16 @@ public class Game {
             if(spot.getName().equals("Go To Jail")){
                 currentPlayer.setJailed(true);
                 currentPlayer.setTurnsInJail(3);
-                currentPlayer.setPosition(map.getFirst().nextLink.nextLink.nextLink.nextLink.nextLink.nextLink.nextLink.nextLink.nextLink.nextLink); //if last is the jail cell
+                //link for the Jail spot
+                currentPlayer.setPosition(map.getFirst().nextLink.nextLink.nextLink.nextLink.nextLink.nextLink.nextLink.nextLink.nextLink.nextLink);
                 System.out.println(currentPlayer.getName() + "'s turn has ended");
             }
             if(spot.getFee()>0){
+                //for the income tax spots and luxury
                 pay(spot, currentPlayer);
                 System.out.println(currentPlayer.getName() + "'s turn has ended");
             }
-            else{ //temporarily for the other weird spots
+            else{
                 System.out.println(currentPlayer.getName() + "'s turn has ended");
             }
         }
@@ -102,9 +112,11 @@ public class Game {
                 buy(spot, currentPlayer);
             }
             else if (spot.isMortgaged()){
-
+                //if spot is mortgaged, do not do anything
+                return;
             }
             else{
+                //payfee if you can't do anything above
                 pay(spot, currentPlayer);
             }
         }
@@ -113,10 +125,40 @@ public class Game {
 
     public void pay(BoardSpace spot, Player player){
         int price = spot.getFee();
-        if (!spot.getColor().equals("weird")){
+        if(spot.getColor().equals("rail")){
+            int propertyCount = 1;
+            for (int i=0;i<spot.getOwner().getProperties().size();i++){
+                //counts the number of properties
+                if (spot.getOwner().getProperties().get(i).getColor().equals(spot.getColor())){
+                    propertyCount++;
+                }
+            }
+            if(propertyCount<=2){
+                price=price*propertyCount;
+            }
+            if(propertyCount==3){
+                price = 100;
+            }
+            if(propertyCount==4){
+                price = 200;
+            }
+            spot.getOwner().setMoney(spot.getOwner().getMoney() + price);
+            player.setMoney(player.getMoney() - price);
+        }
+        else if (spot.getColor().equals("util")){
+            int propertyCount = 1;
+            for (int i=0;i<spot.getOwner().getProperties().size();i++){
+                //counts the number of properties
+                if (spot.getOwner().getProperties().get(i).getColor().equals(spot.getColor())){
+                    propertyCount++;
+                }
+            }
+        }
+        else if (!spot.getColor().equals("weird")){
             int propertyCount = 1;
             int maxPropertyCount = 3;
             for (int i=0;i<spot.getOwner().getProperties().size();i++){
+                //counts the number of properties
                 if (spot.getOwner().getProperties().get(i).getColor().equals(spot.getColor())){
                     propertyCount++;
                 }

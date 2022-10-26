@@ -185,7 +185,10 @@ public class Main {
         game.displayBoard(4,printBoard);
         game.move(3, pieces.getFirst(), board);
         game.displayBoard(4, printBoard);
-        game.move(3, pieces.getFirst(), board);
+        game.move(17, pieces.getFirst(), board);
+        game.displayBoard(4, printBoard);
+
+
 
     }
 
