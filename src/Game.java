@@ -36,9 +36,9 @@ public class Game {
         setPlayers(players);
     }
 
-    public void move(int moves, Link<Player> player){
-        BoardSpace spot = player.data.getPosition().data;
+    public void move(int moves, Link<Player> player, CircularLinkedList<BoardSpace> board){
         Player currentPlayer = player.data;
+        Link<BoardSpace> currentPosition = board.find(currentPlayer.getPosition());
         if(currentPlayer.getJailed()) {
             currentPlayer.setTurnsInJail(currentPlayer.getTurnsInJail()-1);
             Scanner input = new Scanner(System.in);
@@ -62,12 +62,13 @@ public class Game {
             }
         }
         for(int i=0; i<moves; i++){
-            currentPlayer.setPosition(currentPlayer.getPosition().nextLink);
+            currentPlayer.setPosition(currentPosition.nextLink);
             if(currentPlayer.getPosition()==map.getFirst() && !currentPlayer.getJailed()){ //adds 200 to balance for passing Go
                 currentPlayer.setMoney(currentPlayer.getMoney()+200);
             }
+            currentPosition = currentPosition.nextLink;
         }
-        System.out.println(currentPlayer.getPosition().data.getName());
+        BoardSpace spot = player.data.getPosition().data;
         if (spot.getColor().equals("weird")) {
             if(spot.getName().equals("Go To Jail")){
                 currentPlayer.setJailed(true);

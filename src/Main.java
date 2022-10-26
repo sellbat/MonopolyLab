@@ -55,7 +55,6 @@ public class Main {
             Link<BoardSpace> add = new Link(all[i]);
             board.insertFirst(add.data);
         }
-        //boardspace arranged so it can be printed
         BoardSpace[] allPrint = {free, KentuckyAvenue, Ch2, IndianaAvenue,IllinoisAvenue,BORR,AtlanticAvenue,VentnorAvenue,WaterWorks,MarvinGardens,GoToJail,NewYorkAvenue,PacificAvenue,TennesseeAvenue,NorthCarolinaAvenue,CC2,CC3,StJamesPlace,PennsylvaniaAvenue,PennsylvaniaRR,ShortLine,VirginiaAvenue,Ch3,StatesAvenue,ParkPlace,ElectricCompany,Luxury,StCharlesPlace,Boardwalk,Jail,ConnecticutAvenue,VermontAvenue,Ch1,OrientalAvenue,ReadingRR,Income,BalticAvenue,CC1,MediterraneanAvenue,Go};
         for (int i=all.length-1;i>=0;i--){
             Link<BoardSpace> add = new Link(allPrint[i]);
@@ -74,8 +73,7 @@ public class Main {
         }
         Game game = new Game(board, pieces);
         game.displayBoard(4,printBoard);
-        System.out.println(pieces.getFirst().data.getPosition().data.getName());
-        game.move(3,pieces.getFirst());
+        game.move(3,pieces.getFirst(), board);
         game.displayBoard(4,printBoard);
 
     }

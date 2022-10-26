@@ -42,7 +42,7 @@ public class CircularLinkedList<T> {
     public Link<T> find(Link<T> key){
         Link<T> current = first;
         if (current.data.equals(key.data)){
-            return key;
+            return current;
         }
         current = current.nextLink;
         while (!current.data.equals(first.data)){
@@ -51,6 +51,6 @@ public class CircularLinkedList<T> {
             }
             current=current.nextLink;
         }
-        return key;
+        return current;
     }
 }
