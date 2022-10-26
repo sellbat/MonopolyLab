@@ -10,6 +10,7 @@ public class BoardSpace {
 
     private Player owner;
     private int houseNum;
+    private boolean mortgaged;
 
     public BoardSpace(String name,int cost, int fee, int sell, boolean purchasable, boolean jail, String color){
         this.name=name;
@@ -20,6 +21,15 @@ public class BoardSpace {
         this.purchasable=purchasable;
         this.jail=jail;
         this.houseNum=0;
+        this.mortgaged=false;
+    }
+
+    public boolean isMortgaged() {
+        return mortgaged;
+    }
+
+    public void setMortgaged(boolean mortgaged) {
+        this.mortgaged = mortgaged;
     }
 
     public int getHouseNum() {

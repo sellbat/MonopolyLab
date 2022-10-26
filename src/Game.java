@@ -96,10 +96,13 @@ public class Game {
             else{ //temporarily for the other weird spots
                 System.out.println(currentPlayer.getName() + "'s turn has ended");
             }
-            }
+        }
         else {
             if(spot.isPurchasable()){
                 buy(spot, currentPlayer);
+            }
+            else if (spot.isMortgaged()){
+
             }
             else{
                 pay(spot, currentPlayer);
@@ -133,6 +136,19 @@ public class Game {
         else {
             player.setMoney(player.getMoney()-spot.getFee());
         }
+    }
+    public void sell(BoardSpace spot, Player currentPlayer){
+        currentPlayer.setMoney(currentPlayer.getMoney()+spot.getCost());
+        for(int i=0; i<currentPlayer.getProperties().size(); i++){
+            if(currentPlayer.getProperties().get(i)==spot){
+                currentPlayer.getProperties().remove(i);
+            }
+        }
+        spot.setPurchasable(true);
+    }
+    public void mortgage(BoardSpace spot, Player currentPlayer){
+        currentPlayer.setMoney(currentPlayer.getMoney()+spot.getSell());
+        spot.setMortgaged(true);
     }
     public void buy(BoardSpace spot, Player player){
         Scanner input = new Scanner(System.in);
@@ -279,6 +295,10 @@ public class Game {
             for (int j = 0; j < lastMidDistance / 2; j++) {feeRow += " ";}
             feeRow+="|";
             feeRow+=blanks;
+            if(rowCounter==0&&numOnRow==2){
+                feeRow = feeRow.substring(0, feeRow.length()-1);
+                feeRow+="|";
+            }
             for (int i = onPosition.size(); i < (numOfPlayers); i++) { //adds extra spaces so all the spots have the same length
                 String extraMid = "|";
                 for (int j = 0; j < 20; j++) {extraMid += " ";}
