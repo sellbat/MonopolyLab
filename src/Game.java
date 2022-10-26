@@ -5,7 +5,6 @@ public class Game {
     private CircularLinkedList<BoardSpace> map;
     private CircularLinkedList<Player> players;
     private boolean isGameOver;
-    private Link<Player> player;
 
     public CircularLinkedList<BoardSpace> getMap() {
         return map;
@@ -31,71 +30,70 @@ public class Game {
         isGameOver = gameOver;
     }
 
-    public Link<Player> getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Link<Player> player) {
-        this.player = player;
-    }
 
     public Game(CircularLinkedList<BoardSpace> map, CircularLinkedList<Player> players){
         setMap(map);
         setPlayers(players);
     }
 
-    public void move(int moves, Link<Player> currentPlayer){
-        Link<BoardSpace> current = currentPlayer.data.getPosition();
-        BoardSpace spot = current.data;
-        for(int i=0; i<moves; i++){
-            current = current.nextLink;
-            if(current==map.getFirst() && !player.data.getJailed()){ //adds 200 to balance for passing Go
-                player.data.setMoney(player.data.getMoney()+200);
-            }
-        }
-        if(player.data.getJailed()) {
+    public void move(int moves, Link<Player> player){
+        BoardSpace spot = player.data.getPosition().data;
+        Player currentPlayer = player.data;
+        if(currentPlayer.getJailed()) {
+            currentPlayer.setTurnsInJail(currentPlayer.getTurnsInJail()-1);
             Scanner input = new Scanner(System.in);
             System.out.println("Would you like to pay 50$ to the banker to escape jail?");
             String ans = input.next();
             if (ans.equals("yes") || ans.equals("Yes")) {
-                player.data.setMoney(player.data.getMoney()-50);
-                escapeJail(player.data);
-                System.out.println(player.data.getName() + "'s turn has ended");
+                currentPlayer.setMoney(currentPlayer.getMoney()-50);
+                escapeJail(currentPlayer);
+                System.out.println(currentPlayer.getName() + "'s turn has ended");
+                return;
+            }
+            if(currentPlayer.getTurnsInJail()==0){
+                escapeJail(currentPlayer);
+                System.out.println("You are now free after 3 turns in jail");
+                currentPlayer.setMoney(currentPlayer.getMoney()-50);
+                //add in diceroll and new turn
             }
             else{
-                player.data.setTurnsInJail(player.data.getTurnsInJail()-1);
-                System.out.println(player.data.getName() + "'s turn has ended");
+                System.out.println(currentPlayer.getName() + "'s turn has ended");
+                return;
             }
         }
+        for(int i=0; i<moves; i++){
+            currentPlayer.setPosition(currentPlayer.getPosition().nextLink);
+            if(currentPlayer.getPosition()==map.getFirst() && !currentPlayer.getJailed()){ //adds 200 to balance for passing Go
+                currentPlayer.setMoney(currentPlayer.getMoney()+200);
+            }
+        }
+        System.out.println(currentPlayer.getPosition().data.getName());
+        if (spot.getColor().equals("weird")) {
+            if(spot.getName().equals("Go To Jail")){
+                currentPlayer.setJailed(true);
+                currentPlayer.setTurnsInJail(3);
+                currentPlayer.setPosition(map.getLast()); //if last is the jail cell
+                System.out.println(currentPlayer.getName() + "'s turn has ended");
+            }
+            if(spot.getFee()>0){
+                pay(spot, currentPlayer);
+                System.out.println(currentPlayer.getName() + "'s turn has ended");
+            }
+            else{ //temporarily for the other weird spots
+                System.out.println(currentPlayer.getName() + "'s turn has ended");
+            }
+            }
         else {
-            player.data.setPosition(current);
-            if (spot.getColor().equals("weird")) {
-                if(spot.getName().equals("Go To Jail")){
-                    player.data.setJailed(true);
-                    player.data.setTurnsInJail(3);
-                    player.data.setPosition(map.getLast()); //if last is the jail cell
-                    System.out.println(player.data.getName() + "'s turn has ended");
-                }
-                if(spot.getFee()>0){
-                    pay(spot, player.data);
-                    System.out.println(player.data.getName() + "'s turn has ended");
-                }
-                else{ //temporarily for the other weird spots
-                    System.out.println(player.data.getName() + "'s turn has ended");
-                }
-
+            if(spot.isPurchasable()){
+                buy(spot, currentPlayer);
             }
-            else {
-                if(spot.isPurchasable()){
-                    buy(spot, player.data);
-                }
-                else{
-                    pay(spot, player.data);
-                }
+            else{
+                pay(spot, currentPlayer);
             }
         }
-
     }
+
+
     public void pay(BoardSpace spot, Player player){
         player.setMoney(player.getMoney() - spot.getFee());
         spot.getOwner().setMoney(spot.getOwner().getMoney() + spot.getFee());
@@ -206,6 +204,9 @@ public class Game {
                 for (int j = 0; j < secondMidDistance / 2; j++) {thirdRow += " ";}
                 thirdRow += currentPrint.getName();
                 for (int j = 0; j < secondMidDistance / 2; j++) {thirdRow += " ";}
+                if(currentPrint.getName().length()%2==0){
+                    thirdRow = thirdRow.substring(0,thirdRow.length()-1);
+                }
                 if(rowCounter==numOnRow){
                     thirdRow+="|";
                     String newCharacters = characters.get(i) + blanks + thirdRow;

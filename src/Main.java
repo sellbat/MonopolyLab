@@ -55,28 +55,28 @@ public class Main {
             Link<BoardSpace> add = new Link(all[i]);
             board.insertFirst(add.data);
         }
+        //boardspace arranged so it can be printed
         BoardSpace[] allPrint = {free, KentuckyAvenue, Ch2, IndianaAvenue,IllinoisAvenue,BORR,AtlanticAvenue,VentnorAvenue,WaterWorks,MarvinGardens,GoToJail,NewYorkAvenue,PacificAvenue,TennesseeAvenue,NorthCarolinaAvenue,CC2,CC3,StJamesPlace,PennsylvaniaAvenue,PennsylvaniaRR,ShortLine,VirginiaAvenue,Ch3,StatesAvenue,ParkPlace,ElectricCompany,Luxury,StCharlesPlace,Boardwalk,Jail,ConnecticutAvenue,VermontAvenue,Ch1,OrientalAvenue,ReadingRR,Income,BalticAvenue,CC1,MediterraneanAvenue,Go};
         for (int i=all.length-1;i>=0;i--){
             Link<BoardSpace> add = new Link(allPrint[i]);
             printBoard.insertFirst(add.data);
         }
         Link<BoardSpace> GoSpot = new Link<>(Go);
-        Link<BoardSpace> GoSpot2 = new Link<>(NewYorkAvenue);
-        Link<BoardSpace> GoSpot3 = new Link<>(KentuckyAvenue);
 
         Player thimble = new Player("Thimble", GoSpot, "P1");
-         Player boat = new Player("Boat",GoSpot, "P2");
-         Player iron = new Player("Iron",GoSpot, "P3");
-         Player topHat = new Player("Top Hat",GoSpot, "P4");
-        Player zack = new Player("Top Hat",GoSpot, "P5");
-        Player[] players = {thimble,boat,topHat,iron,zack};
+        Player boat = new Player("Boat",GoSpot, "P2");
+        Player iron = new Player("Iron",GoSpot, "P3");
+        Player topHat = new Player("Top Hat",GoSpot, "P4");
+        Player[] players = {thimble,boat,iron, topHat};
         for (int i=0;i<players.length;i++){
             Link<Player> add = new Link(players[i]);
             pieces.insertFirst(add.data);
         }
         Game game = new Game(board, pieces);
-        game.displayBoard(5,printBoard);
+        game.displayBoard(4,printBoard);
+        System.out.println(pieces.getFirst().data.getPosition().data.getName());
         game.move(3,pieces.getFirst());
+        game.displayBoard(4,printBoard);
 
     }
 

@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Player {
-    private static String playerName;
+    private String playerName;
     private double money;
     private Link<BoardSpace> position;
     private Boolean jailed;
