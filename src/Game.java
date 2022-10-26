@@ -150,6 +150,10 @@ public class Game {
         currentPlayer.setMoney(currentPlayer.getMoney()+spot.getSell());
         spot.setMortgaged(true);
     }
+    public void unMortgage(BoardSpace spot, Player currentPlayer){
+        currentPlayer.setMoney(currentPlayer.getMoney() - 1.1*spot.getSell());
+        spot.setMortgaged(false);
+    }
     public void buy(BoardSpace spot, Player player){
         Scanner input = new Scanner(System.in);
         System.out.println(player.getName() + " would you like to purchase " + spot.getName() + " for " + spot.getCost());
