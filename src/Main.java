@@ -181,12 +181,7 @@ public class Main {
         }
         game = new Game(board, pieces);
         game.displayBoard(4,printBoard);
-        game.move(10,pieces.getFirst(), board);
-        game.displayBoard(4,printBoard);
-        game.move(3, pieces.getFirst(), board);
-        game.displayBoard(4, printBoard);
-        game.move(17, pieces.getFirst(), board);
-        game.displayBoard(4, printBoard);
+
 
 
 

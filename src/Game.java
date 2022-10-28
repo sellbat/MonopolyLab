@@ -40,8 +40,11 @@ public class Game {
         //returns integer between 1 and 6
         return (int)(Math.random()*6+1);
     }
-    public void move(int moves, Link<Player> player, CircularLinkedList<BoardSpace> board){
+    public void move(Link<Player> player, CircularLinkedList<BoardSpace> board){
         Player currentPlayer = player.data;
+        int r1 = roll();
+        int r2 = roll();
+        int moves= r1+r2;
         //finds current position in the game map
         Link<BoardSpace> currentPosition = board.find(currentPlayer.getPosition());
         System.out.println(currentPlayer.getName() + "'s current balance is: $" + currentPlayer.getMoney());
@@ -64,8 +67,6 @@ public class Game {
                     System.out.println(currentPlayer.getName() + " has escaped from jail");
                 }
                 else{
-                    int r1 = roll();
-                    int r2 = roll();
                     //if player rolls doubles, he escapes jail
                     if (r1==r2){
                         escapeJail(currentPlayer);
@@ -100,7 +101,7 @@ public class Game {
             }
             if(spot.getFee()>0){
                 //for the income tax spots and luxury
-                pay(spot, currentPlayer);
+                pay(spot, currentPlayer, r1, r2);
                 System.out.println(currentPlayer.getName() + "'s turn has ended");
             }
             else{
@@ -117,13 +118,13 @@ public class Game {
             }
             else{
                 //payfee if you can't do anything above
-                pay(spot, currentPlayer);
+                pay(spot, currentPlayer, r1, r2);
             }
         }
     }
 
 
-    public void pay(BoardSpace spot, Player player){
+    public void pay(BoardSpace spot, Player player, int r1, int r2){
         int price = spot.getFee();
         if(spot.getColor().equals("rail")){
             int propertyCount = 1;
@@ -153,6 +154,14 @@ public class Game {
                     propertyCount++;
                 }
             }
+            if(propertyCount==1){
+                price = 4 * (r1+r2);
+            }
+            if(propertyCount==2){
+                price = 10 *(r1+r2);
+            }
+            spot.getOwner().setMoney(spot.getOwner().getMoney() + price);
+            player.setMoney(player.getMoney() - price);
         }
         else if (!spot.getColor().equals("weird")){
             int propertyCount = 1;
@@ -215,6 +224,24 @@ public class Game {
     public void escapeJail(Player player){ //also use for if the player rolls two doubles and is in jail
         player.setTurnsInJail(0);
         player.setJailed(false);
+    }
+
+    public void bankruptcy(Player player){
+        if(player.getMoney()<0){
+            System.out.println(player.getName() + " has gone bankrupt");
+            getPlayers().delete(player);
+            for(int i=0; i<player.getProperties().size(); i++){
+                player.getProperties().get(i).setMortgaged(true);
+            }
+        }
+
+    }
+    public void gameOver(){
+        //if only one player remaining
+        if(getPlayers().getFirst()==getPlayers().getLast()){
+            System.out.println(getPlayers().getFirst().data.getName() + " has won!");
+            setGameOver(true);
+        }
     }
     public void displayBoard(int numOfPlayers, CircularLinkedList<BoardSpace> printBoard){
         Link<BoardSpace> current = printBoard.getFirst();
