@@ -149,8 +149,21 @@ public class Main {
                                 }
                             }
                             int upgrade = input.nextInt() - 1;
+                            int price = 0;
                             current.data.getProperties().get(upgrade).setHouseNum(current.data.getProperties().get(upgrade).getHouseNum()+1);
-
+                            if (current.data.getProperties().get(upgrade).getColor().equals("brown")||current.data.getProperties().get(upgrade).getColor().equals("light blue")){
+                                price = 50;
+                            }
+                            if (current.data.getProperties().get(upgrade).getColor().equals("pink")||current.data.getProperties().get(upgrade).getColor().equals("orange")){
+                                price = 100;
+                            }
+                            if (current.data.getProperties().get(upgrade).getColor().equals("red")||current.data.getProperties().get(upgrade).getColor().equals("yellow")){
+                                price = 150;
+                            }
+                            if (current.data.getProperties().get(upgrade).getColor().equals("green")||current.data.getProperties().get(upgrade).getColor().equals("dark blue")){
+                                price = 200;
+                            }
+                            current.data.setMoney(current.data.getMoney()-price);
                             premove(current);
                         }
                     }
