@@ -55,7 +55,6 @@ public class Main {
     public static void premove(Link<Player> current){
         System.out.println("Would "+current.data.getName()+" like to do anything before rolling");
         Scanner input= new Scanner(System.in);
-<<<<<<< Updated upstream
         String ready = input.next();
         if (ready.equals("yes")) {
             if (!current.data.getProperties().isEmpty()) {
@@ -64,28 +63,6 @@ public class Main {
                 if (seller.equals("yes") || seller.equals("Yes")) {
                     System.out.println("Select which property by number");
                     for (int i = 0; i < current.data.getProperties().size(); i++) {
-=======
-        if (!current.data.getProperties().isEmpty()) {
-            System.out.println("Would "+current.data.getName()+" like to sell any of your properties?");
-            String seller = input.next();
-            if (seller.equals("yes") || seller.equals("Yes")) {
-                System.out.println("Select which property by number");
-                for (int i=0;i<current.data.getProperties().size();i++){
-                    System.out.println(i+1+": "+current.data.getProperties().get(i).getName());
-                }
-                int sold = input.nextInt()-1;
-                game.sell(current.data.getProperties().get(sold),current.data);
-                premove(current);
-            }
-            System.out.println("Would you like to mortgage any of your properties?");
-            String morter = input.next();
-            if (morter.equals("yes") || morter.equals("Yes")) {
-                System.out.println("Select which property by number");
-                boolean any = false;
-                for (int i=0;i<current.data.getProperties().size();i++){
-                    if (!current.data.getProperties().get(i).isMortgaged()) {
-                        any=true;
->>>>>>> Stashed changes
                         System.out.println(i + 1 + ": " + current.data.getProperties().get(i).getName());
                     }
                     int sold = input.nextInt() - 1;
