@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
+    //static game, boardspots, board arrays, and player arrays
     static Game game;
     static BoardSpace MediterraneanAvenue = new BoardSpace("Mediterranean Avenue",60,2,30,true,false,"brown");
     static BoardSpace BalticAvenue = new BoardSpace("Baltic Avenue",60,4,30,true,false,"brown");
@@ -48,18 +49,22 @@ public class Main {
     static BoardSpace CC3 = new BoardSpace("Community Chest",0,0,0,false,false,"weird");
     static BoardSpace Ch3 = new BoardSpace("Chance",0,0,0,false,false,"weird");
     static BoardSpace Luxury = new BoardSpace("Luxury Tax",0,100,0,false,false,"weird");
-    public static int roll(){
+    public static int roll(){//gets a random number between 1 and 6
 
         return (int)(Math.random()*6+1);
     }
     public static void premove(Link<Player> current){
+        //checks if the player would like to take any premove actions
         System.out.println("Would "+current.data.getName()+" like to do anything before rolling");
         Scanner input= new Scanner(System.in);
         String ready = input.next();
+        //if they want to do things, only lets them if they have property
         if (ready.equals("yes")) {
             if (!current.data.getProperties().isEmpty()) {
                 System.out.println("Would " + current.data.getName() + " like to sell any of your properties?");
                 String seller = input.next();
+                //if they want to sell a property, prints all of their properties, has them select which to sell,
+                //then uses the sell method to sell said property, reruns premove
                 if (seller.equals("yes") || seller.equals("Yes")) {
                     System.out.println("Select which property by number");
                     for (int i = 0; i < current.data.getProperties().size(); i++) {
@@ -73,6 +78,8 @@ public class Main {
                 System.out.println("Would you like to mortgage any of your properties?");
                 String morter = input.next();
                 if (morter.equals("yes") || morter.equals("Yes")) {
+                    //if they want to motgage a property, prints all of their properties, has them select which to mortgage,
+                    //then uses the mortgage method to mortgage said property, reruns premove
                     System.out.println("Select which property by number");
                     boolean any = false;
                     for (int i = 0; i < current.data.getProperties().size(); i++) {
@@ -81,6 +88,7 @@ public class Main {
                             System.out.println(i + 1 + ": " + current.data.getProperties().get(i).getName());
                         }
                     }
+                    //makes sure to only let them mortgage if they have mortgagable property
                     if (any) {
                         int mortgaged = input.nextInt() - 1;
                         game.mortgage(current.data.getProperties().get(mortgaged), current.data);
@@ -95,6 +103,8 @@ public class Main {
                 System.out.println("Would you like to unmortgage any of your properties?");
                 String unmorter = input.next();
                 if (unmorter.equals("yes") || unmorter.equals("Yes")) {
+                    //if they want to unmortgage a property, prints all of their properties, has them select which to unmortgage,
+                    //then uses the unmortgage method to unmortgage said property, reruns premove
                     System.out.println("Select which property by number");
                     boolean any = false;
                     for (int i = 0; i < current.data.getProperties().size(); i++) {
@@ -103,6 +113,7 @@ public class Main {
                             System.out.println(i + 1 + ": " + current.data.getProperties().get(i).getName());
                         }
                     }
+                    //makes sure they have properties to unmortgage
                     if (any) {
                         int unmortgaged = input.nextInt() - 1;
                         game.unMortgage(current.data.getProperties().get(unmortgaged), current.data);
@@ -117,6 +128,8 @@ public class Main {
                 System.out.println("Would you like to upgrade any of your properties?");
                 String upgrader = input.next();
                 if (upgrader.equals("yes") || upgrader.equals("Yes")) {
+                    //if they want to upgrade a property creates a string with every instance of every
+                    //property color they own
                     String owned = "brown darkblue ";
                     for (int i = 0; i < current.data.getProperties().size(); i++) {
                         String color = current.data.getProperties().get(i).getColor();
@@ -128,6 +141,7 @@ public class Main {
                         }
                         owned = owned + color + " ";
                     }
+                    //while there are colors left in the owned colors, counts the number of copies of the color currently first in the colors
                     while (owned.length() > 1) {
                         String color = owned.substring(0, owned.indexOf(' '));
                         String copy = owned;
@@ -138,6 +152,7 @@ public class Main {
                             }
                             copy = copy.substring(copy.indexOf(' ') + 1);
                         }
+                        //if there are three of the same color (a monopoly) asks if you want to upgrade a property of that color
                         if (count == 3) {
                             if (color.equals("darkblue")) {
                                 color = "dark blue";
@@ -148,6 +163,7 @@ public class Main {
                             System.out.println("Would you like to upgrade a " + color + " property?");
                             upgrader = input.next();
                             if (upgrader.equals("yes") || upgrader.equals("Yes")) {
+                                //if you want to upgrade that color, asks which property
                                 System.out.println("Select which property by number");
                                 for (int i = 0; i < current.data.getProperties().size(); i++) {
                                     if (current.data.getProperties().get(i).getColor().equals(color)) {
@@ -156,7 +172,9 @@ public class Main {
                                 }
                                 int upgrade = input.nextInt() - 1;
                                 int price = 0;
+                                //adds a house to the wanted property
                                 current.data.getProperties().get(upgrade).setHouseNum(current.data.getProperties().get(upgrade).getHouseNum() + 1);
+                               //charges the player based on the color of the property then reruns premove
                                 if (current.data.getProperties().get(upgrade).getColor().equals("brown") || current.data.getProperties().get(upgrade).getColor().equals("light blue")) {
                                     price = 50;
                                 }
@@ -174,6 +192,7 @@ public class Main {
                                 return;
                             }
                         }
+                        //takes the first color out of owned to ensure that all monopolies are seen
                         owned = owned.substring(owned.indexOf(' ') + 1);
                     }
                 }
@@ -182,11 +201,13 @@ public class Main {
     }
     public static void main(String[] args) {
         CircularLinkedList<BoardSpace> printBoard = new CircularLinkedList<>();
+        //adds every board space to the board
         BoardSpace[] all = {Go,MediterraneanAvenue,CC1,BalticAvenue,Income,ReadingRR,OrientalAvenue,Ch1,VermontAvenue,ConnecticutAvenue,Jail,StCharlesPlace,ElectricCompany,StatesAvenue,VirginiaAvenue,PennsylvaniaRR,StJamesPlace,CC2,TennesseeAvenue,NewYorkAvenue,free,KentuckyAvenue,Ch2,IndianaAvenue,IllinoisAvenue,BORR,AtlanticAvenue,VentnorAvenue,WaterWorks,MarvinGardens,GoToJail,PacificAvenue,NorthCarolinaAvenue,CC3,PennsylvaniaAvenue,ShortLine,Ch3,ParkPlace,Luxury,Boardwalk};
         for (int i=all.length-1;i>=0;i--){
             Link<BoardSpace> add = new Link(all[i]);
             board.insertFirst(add.data);
         }
+        //prints board from the bottom right
         BoardSpace[] allPrint = {free, KentuckyAvenue, Ch2, IndianaAvenue,IllinoisAvenue,BORR,AtlanticAvenue,VentnorAvenue,WaterWorks,MarvinGardens,GoToJail,NewYorkAvenue,PacificAvenue,TennesseeAvenue,NorthCarolinaAvenue,CC2,CC3,StJamesPlace,PennsylvaniaAvenue,PennsylvaniaRR,ShortLine,VirginiaAvenue,Ch3,StatesAvenue,ParkPlace,ElectricCompany,Luxury,StCharlesPlace,Boardwalk,Jail,ConnecticutAvenue,VermontAvenue,Ch1,OrientalAvenue,ReadingRR,Income,BalticAvenue,CC1,MediterraneanAvenue,Go};
         for (int i=all.length-1;i>=0;i--){
             Link<BoardSpace> add = new Link(allPrint[i]);
@@ -201,14 +222,18 @@ public class Main {
         Player Brantley = new Player("Brantley",GoSpot, "P5");
         Player connor = new Player("Connor",GoSpot, "P4");
         Player[] players = {thimble,boat};
+        //adds every piece to a piece circularly linked list
         for (int i=0;i<players.length;i++){
             Link<Player> add = new Link(players[i]);
             pieces.insertFirst(add.data);
         }
+        //creates the game then prints it
         game = new Game(board, pieces);
-        game.displayBoard(2,printBoard);
-        int counter = 0;
+        game.displayBoard(6,printBoard);
         Link<Player> now = pieces.getFirst();
+        //runs the game with a display, premove, and move, then checks for bankruptcy and game over
+        //if the game is over stops
+        //moves to the next player after each move
         while (!game.isGameOver()){
             game.displayBoard(game.getPlayers().size(),printBoard);
             premove(now);
