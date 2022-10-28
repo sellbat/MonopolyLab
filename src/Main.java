@@ -217,7 +217,6 @@ public class Main {
             now=now.nextLink;
             game.gameOver();
         }
-        System.out.println("thanks for playing");
     }
 
 }

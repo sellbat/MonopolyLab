@@ -226,6 +226,7 @@ public class Game {
             }
         }
         spot.setPurchasable(true);
+        return;
     }
     public void mortgage(BoardSpace spot, Player currentPlayer){
         if (spot.getHouseNum()>0){
