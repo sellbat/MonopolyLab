@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 public class Main {
     //static game, boardspots, board arrays, and player arrays
+    //Brantley
     static Game game;
     static BoardSpace MediterraneanAvenue = new BoardSpace("Mediterranean Avenue",60,2,30,true,false,"brown");
     static BoardSpace BalticAvenue = new BoardSpace("Baltic Avenue",60,4,30,true,false,"brown");
@@ -53,6 +54,7 @@ public class Main {
 
         return (int)(Math.random()*6+1);
     }
+    //Brantley
     public static void premove(Link<Player> current){
         //checks if the player would like to take any premove actions
         System.out.println("Would "+current.data.getName()+" like to do anything before rolling");
@@ -199,6 +201,7 @@ public class Main {
             }
         }
     }
+    //Connor
     public static void main(String[] args) {
         CircularLinkedList<BoardSpace> printBoard = new CircularLinkedList<>();
         //adds every board space to the board
@@ -221,7 +224,7 @@ public class Main {
         Player topHat = new Player("Top Hat",GoSpot, "P4");
         Player Brantley = new Player("Brantley",GoSpot, "P5");
         Player connor = new Player("Connor",GoSpot, "P4");
-        Player[] players = {thimble,boat};
+        Player[] players = {thimble,boat,iron,topHat,Brantley,connor};
         //adds every piece to a piece circularly linked list
         for (int i=0;i<players.length;i++){
             Link<Player> add = new Link(players[i]);

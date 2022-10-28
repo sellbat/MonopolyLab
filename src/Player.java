@@ -64,7 +64,7 @@ public class Player {
     public void setProperties(ArrayList<BoardSpace> properties) {
         this.properties = properties;
     }
-
+//Connor
     public Player(String playerName, Link<BoardSpace> start, String symbol){
         //original amount is 1500
         setMoney(1500.00);

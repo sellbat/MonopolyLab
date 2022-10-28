@@ -40,6 +40,7 @@ public class Game {
         //returns integer between 1 and 6
         return (int)(Math.random()*6+1);
     }
+    //Connor + brantley
     public void move(Link<Player> player, CircularLinkedList<BoardSpace> board, int rollNumber){
         Player currentPlayer = player.data;
         int r1 = roll();
@@ -140,7 +141,7 @@ public class Game {
         }
     }
 
-
+//Connor
     public void pay(BoardSpace spot, Player player, int r1, int r2){
         int price = spot.getFee();
         if(spot.getColor().equals("rail")){
@@ -210,6 +211,7 @@ public class Game {
             player.setMoney(player.getMoney()-spot.getFee());
         }
     }
+    //Connor + Brantley
     public void sell(BoardSpace spot, Player currentPlayer){
         if (spot.getHouseNum()>0){
             //if the spot has houses on it
@@ -255,6 +257,7 @@ public class Game {
         spot.setPurchasable(true);
         return;
     }
+    //Brantley
     public void mortgage(BoardSpace spot, Player currentPlayer){
         if (spot.getHouseNum()>0){
             //sells all the houses on the spots similar to the buy method
@@ -291,11 +294,13 @@ public class Game {
         currentPlayer.setMoney(currentPlayer.getMoney()+spot.getSell());
         spot.setMortgaged(true);
     }
+    //Connor
     public void unMortgage(BoardSpace spot, Player currentPlayer){
         //takes away 110% of the spot's sell price from player balance
         currentPlayer.setMoney(currentPlayer.getMoney() - 1.1*spot.getSell());
         spot.setMortgaged(false);
     }
+    //Connor
     public void buy(BoardSpace spot, Player player){
         Scanner input = new Scanner(System.in);
         System.out.println(player.getName() + " would you like to purchase " + spot.getName() + " for " + spot.getCost());
@@ -314,10 +319,12 @@ public class Game {
             System.out.println(player.getName() + "'s turn has ended");
         }
     }
+    //Connor
     public void escapeJail(Player player){
         player.setTurnsInJail(0);
         player.setJailed(false);
     }
+    //Connor
     public void bankruptcy(Player player){
         if(player.getMoney()<0){
             //if the player no longer has money
@@ -331,6 +338,7 @@ public class Game {
         }
 
     }
+    //Connor
     public void gameOver(){
         //if only one player remaining
         if(getPlayers().getFirst()==getPlayers().getLast()){
@@ -339,6 +347,7 @@ public class Game {
             setGameOver(true);
         }
     }
+    //Connor
     public void displayBoard(int numOfPlayers, CircularLinkedList<BoardSpace> printBoard){
         Link<BoardSpace> current = printBoard.getFirst();
         //prints top row of monopoly board
@@ -369,6 +378,7 @@ public class Game {
         printBox(numOfPlayers, 11, current);
 
     }
+    //Connor
     public void printBox(int numOfPlayers, int numOnRow, Link<BoardSpace> current) {
         String topRow = "|";
         String secondRow = "|";

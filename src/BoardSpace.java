@@ -12,7 +12,7 @@ public class BoardSpace {
     private Player owner;
     private int houseNum;
     private boolean mortgaged;
-
+//Brantley
     public BoardSpace(String name,int cost, int fee, int sell, boolean purchasable, boolean jail, String color){
         this.name=name;
         this.color=color;

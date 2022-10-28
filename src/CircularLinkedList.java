@@ -26,6 +26,7 @@ public class CircularLinkedList<T> {
     public boolean isEmpty(){//checks if the list is empty
         return first==null&&last==null;
     }
+    //Brantley
     public void insertFirst(T newData){//inserts a new link
         Link<T> newLink = new Link<T>(newData);
         if (isEmpty()){//if the link is the only link, makes it both first and last
@@ -38,6 +39,7 @@ public class CircularLinkedList<T> {
             last.nextLink = first;
         }
     }
+    //Brantley
     public Link<T> find(Link<T> key){//locates a link in the list based on data
         Link<T> current = first;
         //returns the first link if the key is first
@@ -54,6 +56,7 @@ public class CircularLinkedList<T> {
         }
         return current;
     }
+    //Connor
     public void delete(T data){//deletes a link from the list
         Link<T> current = first;
         //if the wanted deletion is the first link, sets the first link as the old second and sets the last links next link to the new first
@@ -78,6 +81,7 @@ public class CircularLinkedList<T> {
             }
         }
     }
+    //Connor
     public int size(){ //finds the number of links in the list
         Link<T> current = first;
         int counter = 0;
