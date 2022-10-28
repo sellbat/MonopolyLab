@@ -190,17 +190,24 @@ public class Main {
         Player boat = new Player("Boat",GoSpot, "P2");
         Player iron = new Player("Iron",GoSpot, "P3");
         Player topHat = new Player("Top Hat",GoSpot, "P4");
-        Player[] players = {thimble,boat,iron, topHat};
+        Player Brantley = new Player("Brantley",GoSpot, "P5");
+        Player connor = new Player("Connor",GoSpot, "P4");
+        Player[] players = {thimble,boat,iron, topHat,Brantley,connor};
         for (int i=0;i<players.length;i++){
             Link<Player> add = new Link(players[i]);
             pieces.insertFirst(add.data);
         }
         game = new Game(board, pieces);
-        game.displayBoard(4,printBoard);
-
-
-
-
+        game.displayBoard(6,printBoard);
+        int counter = 0;
+        Link<Player> now = pieces.getFirst();
+        while (!game.isGameOver()){
+            premove(now);
+            game.move(now,board);
+            game.bankruptcy(now.data);
+            now=now.nextLink;
+            game.gameOver();
+        }
     }
 
 }
