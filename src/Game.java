@@ -121,6 +121,9 @@ public class Game {
                 pay(spot, currentPlayer, r1, r2);
             }
         }
+        if (r1==r2){
+            move(player,board);
+        }
     }
 
 

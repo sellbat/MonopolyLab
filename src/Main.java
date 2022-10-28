@@ -202,6 +202,7 @@ public class Main {
         int counter = 0;
         Link<Player> now = pieces.getFirst();
         while (!game.isGameOver()){
+            game.displayBoard(6,printBoard);
             premove(now);
             game.move(now,board);
             game.bankruptcy(now.data);
