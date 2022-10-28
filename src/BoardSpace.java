@@ -1,4 +1,5 @@
 public class BoardSpace {
+    //used to store property information
     private int cost;
     private int fee;
     private int sell;
@@ -17,9 +18,11 @@ public class BoardSpace {
         this.color=color;
         this.cost=cost;
         this.fee=fee;
+        //sell price is half the cost of the property
         this.sell=cost/2;
         this.purchasable=purchasable;
         this.jail=jail;
+        //no houses are originally on the property
         this.houseNum=0;
         this.mortgaged=false;
     }

@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Player {
+    //Players all have names, money, position, weather they are jailed, turns in jail, properties, and symbol
+    //used to hold all the player and their information
     private String playerName;
     private double money;
     private Link<BoardSpace> position;
@@ -18,20 +20,15 @@ public class Player {
     public void setSymbol(String symbol) {
         this.symbol = symbol;
     }
-
-
     public String getName() {
         return this.playerName;
     }
-
     public void setName(String Name) {
         this.playerName = Name;
     }
-
     public double getMoney() {
         return money;
     }
-
     public void setMoney(double money) {
         this.money = money;
     }
@@ -69,11 +66,14 @@ public class Player {
     }
 
     public Player(String playerName, Link<BoardSpace> start, String symbol){
-        setMoney(500.00);
+        //original amount is 1500
+        setMoney(1500.00);
         setName(playerName);
         ArrayList<BoardSpace> properties = new ArrayList<>();
         setProperties(properties);
+        //position is the start
         setPosition(start);
+        //they are not originally jailed
         setJailed(false);
         setTurnsInJail(0);
         setSymbol(symbol);
