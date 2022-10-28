@@ -117,7 +117,7 @@ public class Main {
                 System.out.println("Would you like to upgrade any of your properties?");
                 String upgrader = input.next();
                 if (upgrader.equals("yes") || upgrader.equals("Yes")) {
-                    String owned = "brown darkblue";
+                    String owned = "brown darkblue ";
                     for (int i = 0; i < current.data.getProperties().size(); i++) {
                         String color = current.data.getProperties().get(i).getColor();
                         if (color.equals("light blue")) {
@@ -126,14 +126,14 @@ public class Main {
                         if (color.equals("dark blue")) {
                             color = "darkblue";
                         }
-                        owned = owned + " " + color;
+                        owned = owned + color + " ";
                     }
-                    while (owned.length() > 0) {
+                    while (owned.length() > 1) {
                         String color = owned.substring(0, owned.indexOf(' '));
                         String copy = owned;
                         int count = 0;
-                        while (copy.length() > 0) {
-                            if (color.substring(0, copy.indexOf(' ')).equals(color)) {
+                        while (copy.length() > 1) {
+                            if (copy.substring(0, copy.indexOf(' ')).equals(color)) {
                                 count++;
                             }
                             copy = copy.substring(copy.indexOf(' ') + 1);
