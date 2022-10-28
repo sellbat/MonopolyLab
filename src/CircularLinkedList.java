@@ -55,17 +55,19 @@ public class CircularLinkedList<T> {
     }
     public void delete(T data){
         Link<T> current = first;
-        if(getFirst().data.equals(data)){
-            while(current.nextLink != first) {
-                current = current.nextLink;
-            }
+        if (current.data.equals(data)){
             first = first.nextLink;
-            last.nextLink = first;
+            last.nextLink=first;
         }
         else {
-            while (current.nextLink != first) {
+            boolean deleted = true;
+            while (deleted) {
                 if (current.nextLink.data.equals(data)) {
                     current.nextLink = current.nextLink.nextLink;
+                    deleted=false;
+                }
+                if (current.nextLink.equals(first)){
+                    last=current;
                 }
                 current = current.nextLink;
             }
