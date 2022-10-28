@@ -146,12 +146,13 @@ public class Game {
         if(spot.getColor().equals("rail")){
             int propertyCount = 1;
             for (int i=0;i<spot.getOwner().getProperties().size();i++){
-                //counts the number of properties
+                //counts the number of properties of rail to do the fee calculations
                 if (spot.getOwner().getProperties().get(i).getColor().equals(spot.getColor())){
                     propertyCount++;
                 }
             }
             if(propertyCount<=2){
+                //different fees for rail
                 price=price*propertyCount;
             }
             if(propertyCount==3){
@@ -171,6 +172,7 @@ public class Game {
                     propertyCount++;
                 }
             }
+            //utility fess depend on what the player rolls
             if(propertyCount==1){
                 price = 4 * (r1+r2);
             }
@@ -189,12 +191,14 @@ public class Game {
                     propertyCount++;
                 }
             }
+            //if the spot is a normal spot, the fee increments based on the houses
             if (spot.getColor().equals("brown")||spot.getColor().equals("dark blue")){
                 maxPropertyCount=2;
             }
             if (maxPropertyCount==propertyCount){
                 price=price*2;
                 for (int i=0;i<spot.getHouseNum();i++){
+                    //increments the prices based on the number of houses
                     price=price*3;
                 }
             }
@@ -202,76 +206,93 @@ public class Game {
             player.setMoney(player.getMoney() - price);
         }
         else {
+            //else, just pay the fee of the spot
             player.setMoney(player.getMoney()-spot.getFee());
         }
     }
     public void sell(BoardSpace spot, Player currentPlayer){
         if (spot.getHouseNum()>0){
+            //if the spot has houses on it
             if (spot.getColor().equals("brown")||spot.getColor().equals("light blue")){
+                //sells all the houses on the spot
                 for (int i=0;i<spot.getHouseNum();i++){
                     currentPlayer.setMoney(currentPlayer.getMoney()+25);
                 }
+                //removes the houses from the spot
                 spot.setHouseNum(0);
             }
             if (spot.getColor().equals("pink")||spot.getColor().equals("orange")){
                 for (int i=0;i<spot.getHouseNum();i++){
+                    //sells all the houses on the spot for 50
                     currentPlayer.setMoney(currentPlayer.getMoney()+50);
                 }
                 spot.setHouseNum(0);
             }
             if (spot.getColor().equals("red")||spot.getColor().equals("yellow")){
                 for (int i=0;i<spot.getHouseNum();i++){
+                    //sells all the houses on the spot for 75
                     currentPlayer.setMoney(currentPlayer.getMoney()+75);
                 }
                 spot.setHouseNum(0);
             }
             if (spot.getColor().equals("green")||spot.getColor().equals("dark blue")){
                 for (int i=0;i<spot.getHouseNum();i++){
+                    //sells all the houses on the spot for 100
                     currentPlayer.setMoney(currentPlayer.getMoney()+100);
                 }
                 spot.setHouseNum(0);
             }
         }
+        //sell sthe actual cost of the house
         currentPlayer.setMoney(currentPlayer.getMoney()+spot.getCost());
         for(int i=0; i<currentPlayer.getProperties().size(); i++){
             if(currentPlayer.getProperties().get(i)==spot){
+                //removes the spot from the players properties
                 currentPlayer.getProperties().remove(i);
             }
         }
+        //allows the spot to be purchased
         spot.setPurchasable(true);
         return;
     }
     public void mortgage(BoardSpace spot, Player currentPlayer){
         if (spot.getHouseNum()>0){
+            //sells all the houses on the spots similar to the buy method
             if (spot.getColor().equals("brown")||spot.getColor().equals("light blue")){
                 for (int i=0;i<spot.getHouseNum();i++){
+                    //sells houses for 25
                     currentPlayer.setMoney(currentPlayer.getMoney()+25);
                 }
                 spot.setHouseNum(0);
             }
             if (spot.getColor().equals("pink")||spot.getColor().equals("orange")){
                 for (int i=0;i<spot.getHouseNum();i++){
+                    //sells houses for 50
                     currentPlayer.setMoney(currentPlayer.getMoney()+50);
                 }
                 spot.setHouseNum(0);
             }
             if (spot.getColor().equals("red")||spot.getColor().equals("yellow")){
                 for (int i=0;i<spot.getHouseNum();i++){
+                    //sells houses for 75
                     currentPlayer.setMoney(currentPlayer.getMoney()+75);
                 }
                 spot.setHouseNum(0);
             }
             if (spot.getColor().equals("green")||spot.getColor().equals("dark blue")){
                 for (int i=0;i<spot.getHouseNum();i++){
+                    //sells houses for 100
                     currentPlayer.setMoney(currentPlayer.getMoney()+100);
                 }
                 spot.setHouseNum(0);
             }
         }
+        //mortgages the house
         currentPlayer.setMoney(currentPlayer.getMoney()+spot.getSell());
         spot.setMortgaged(true);
     }
     public void unMortgage(BoardSpace spot, Player currentPlayer){
+        //takes away 110% of the spot's sell price from player balance
         currentPlayer.setMoney(currentPlayer.getMoney() - 1.1*spot.getSell());
         spot.setMortgaged(false);
     }
@@ -283,7 +304,9 @@ public class Game {
             player.setMoney(player.getMoney() - spot.getCost());
             ArrayList<BoardSpace> tempProperties = player.getProperties();
             tempProperties.add(spot);
+            //adds the property to the players properties
             player.setProperties(tempProperties);
+            //makes the property not purchasable
             spot.setPurchasable(false);
             spot.setOwner(player);
         }
@@ -291,16 +314,18 @@ public class Game {
             System.out.println(player.getName() + "'s turn has ended");
         }
     }
-    public void escapeJail(Player player){ //also use for if the player rolls two doubles and is in jail
+    public void escapeJail(Player player){
         player.setTurnsInJail(0);
         player.setJailed(false);
     }
-
     public void bankruptcy(Player player){
         if(player.getMoney()<0){
+            //if the player no longer has money
             System.out.println(player.getName() + " has gone bankrupt");
+            //removes player from the game's player list
             getPlayers().delete(player);
             for(int i=0; i<player.getProperties().size(); i++){
+                //sets all the players properties to mortgaged since it is the same as removing them from the map
                 player.getProperties().get(i).setMortgaged(true);
             }
         }
@@ -309,16 +334,19 @@ public class Game {
     public void gameOver(){
         //if only one player remaining
         if(getPlayers().getFirst()==getPlayers().getLast()){
+            //if there is only one player left
             System.out.println(getPlayers().getFirst().data.getName() + " has won!");
             setGameOver(true);
         }
     }
     public void displayBoard(int numOfPlayers, CircularLinkedList<BoardSpace> printBoard){
         Link<BoardSpace> current = printBoard.getFirst();
+        //prints top row of monopoly board
         printBox(numOfPlayers, 11, current);
         for(int i=0; i<11; i++){
             current = current.nextLink;
         }
+        //prints the middle rows of the monopoly board
         printBox(numOfPlayers, 2, current);
         current = current.nextLink.nextLink;
         printBox(numOfPlayers, 2, current);
@@ -337,6 +365,7 @@ public class Game {
         current = current.nextLink.nextLink;
         printBox(numOfPlayers, 2, current);
         current = current.nextLink.nextLink;
+        //prints the final row of the monopoly board
         printBox(numOfPlayers, 11, current);
 
     }
@@ -349,9 +378,10 @@ public class Game {
         int rowCounter = 0;
         int max = 25;
         for (int z = 0; z < numOnRow; z++) {
+            //for the number of spots on the row
             String blanks = "";
             if(numOnRow==2) { //blanks for if there is only two rows
-                for (int u = 0; u < (21 * 9); u++) { //21 blanks 9 times for the amount in between the two rows
+                for (int u = 0; u < ((max) * 9); u++) { //21 blanks 9 times for the amount in between the two rows
                     blanks += " ";
                 }
             }
@@ -360,25 +390,26 @@ public class Game {
             int counter = 0;
             Link<Player> currentPlayer = this.getPlayers().getFirst();
             while (counter < numOfPlayers) {
-                //adds the players that are on the spot
+                //adds the players that are on the spot to onPosition arraylist
                 if (currentPlayer.data.getPosition().data == (spot)) {
                     onPosition.add(currentPlayer.data);
                 }
                 currentPlayer = currentPlayer.nextLink;
                 counter++;
             }
-            int distance = 21;//maxDistance for entire board spot
+            int distance = max;//maxDistance for entire board spot
             if(numOnRow==2&&rowCounter!=0){topRow+="|";}
             //adds the bar if its the second version of the top row
             for (int i = 0; i < distance; i++) {topRow += "-";}
-            if(numOnRow==2) {//fixes spacing error in row lengths
+            if(numOnRow==2) {
+                //makes the blanks 1 spot shorter if its a middle row
                 String topBlanks = blanks.substring(0, blanks.length() - 1);
                 topRow += topBlanks;
             }
             else{
                 topRow+=blanks;
             }
-            int midDistance = 20 - spot.getName().length();
+            int midDistance = (max-1) - spot.getName().length();
             if(spot.getName().length()%2==1){secondRow+=" ";}
             for (int j = 0; j < midDistance / 2; j++) { //centers the name on the spot
                 secondRow += " ";
@@ -388,48 +419,62 @@ public class Game {
             secondRow+="|";
             secondRow+=blanks;//for the case of 2 rows
             if(numOnRow==2){
+                //removes one space if it is a middle row
                 secondRow = secondRow.substring(0,secondRow.length()-1);
                 if(rowCounter==0) {
+                    //if its the first row, it adds a bar
                     secondRow += "|";
                 }
             }
-            for (int i = 0; i < onPosition.size(); i++) { //prints the players that are on the spot with name centered
+            for (int i = 0; i < onPosition.size(); i++) {
+                //prints the players that are on the spot with name centered
                 Player currentPrint = onPosition.get(i);
-                int secondMidDistance = 20 - currentPrint.getName().length();
+                int secondMidDistance = (max-1) - currentPrint.getName().length();
+                //spaces the player name so its in the middle of the board
                 for (int j = 0; j < secondMidDistance / 2; j++) {thirdRow += " ";}
                 thirdRow += currentPrint.getName();
                 for (int j = 0; j < secondMidDistance / 2; j++) {thirdRow += " ";}
                 if(currentPrint.getName().length()%2==0){
+                    //removes an extra space if the player name is even
                     thirdRow = thirdRow.substring(0,thirdRow.length()-1);
                 }
                 if(rowCounter==numOnRow){
+                    //if its the final spot, add a bar to the end
                     thirdRow+="|";
                     String newCharacters = characters.get(i) + blanks + thirdRow;
+                    //adds the values to the current characters arraylist
                     characters.set(i, newCharacters);
                 }
                 if(rowCounter==0) {
                     if(numOnRow==2){
+                        //creates a new string to the arraylist that ends with a bar
                         characters.add(thirdRow + "|");
                     }
                     else {
+                        //creates a new string to the arraylist
                         characters.add(thirdRow);
                     }
                 }
                 else{
+                    //if its not the final spot or first spot add the blanks
                     String newCharacters = characters.get(i) + blanks + thirdRow;
                     if(numOnRow==2){
+                        //if its a middle spot, decrease size by 1
                         newCharacters = characters.get(i) +blanks.substring(0,blanks.length()-1) + thirdRow;
                     }
                     characters.set(i, newCharacters);
                 }
                 thirdRow="| ";
             }
-            int lastMidDistance = 20 - String.valueOf(spot.getCost()).length();
+            int lastMidDistance = (max-1) - String.valueOf(spot.getCost()).length();
             if(String.valueOf(spot.getCost()).length()%2==1){feeRow+=" ";}
-            for (int j = 0; j < lastMidDistance / 2; j++) { //centers the name on the spot
+            //if its an odd size, add a space
+            for (int j = 0; j < lastMidDistance / 2; j++) {
+                //centers the fee on the spot
                 feeRow += " ";
             }
             if(spot.getCost() != 0){
+                //if there is an actual fee
                 feeRow += String.valueOf(spot.getCost());
             }
             else{
@@ -439,18 +484,23 @@ public class Game {
             feeRow+="|";
             feeRow+=blanks;
             if(rowCounter==0&&numOnRow==2){
+                //if its a first middle spot
                 feeRow = feeRow.substring(0, feeRow.length()-1);
                 feeRow+="|";
             }
-            for (int i = onPosition.size(); i < (numOfPlayers); i++) { //adds extra spaces so all the spots have the same length
+            for (int i = onPosition.size(); i < (numOfPlayers); i++) {
+                //adds extra spaces so all the spots have the same length
                 String extraMid = "|";
-                for (int j = 0; j < 20; j++) {extraMid += " ";}
+                for (int j = 0; j < (max-1); j++) {extraMid += " ";}
+                //blank lines that account for the player not on the spot
                 if(rowCounter==numOnRow){
+                    //similar reasoning as the past methods
                     extraMid+="|";
                     String newCharacters = characters.get(i) + blanks + extraMid;
                     characters.set(i, newCharacters);
                 }
                 if(rowCounter==0) {
+                    //if its the first value in the row
                     if(numOnRow==2){
                         characters.add(extraMid + "|");
                     }
@@ -466,13 +516,16 @@ public class Game {
                     characters.set(i, newCharacters);
                 }
             }
+            //accounts for the spots
             rowCounter++;
             current = current.nextLink;
         }
+        //prints out all the different lines in the row
         System.out.println(topRow);
         System.out.println(secondRow);
         for(int i=0; i<characters.size(); i++){
             System.out.println(characters.get(i) + "|");
+            //prints out all the lines in the character arraylist
         }
         System.out.println(feeRow);
         System.out.println(topRow);
