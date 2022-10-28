@@ -113,8 +113,7 @@ public class Game {
                 buy(spot, currentPlayer);
             }
             else if (spot.isMortgaged()){
-                //if spot is mortgaged, do not do anything
-                return;
+
             }
             else{
                 //payfee if you can't do anything above
