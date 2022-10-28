@@ -111,47 +111,50 @@ public class Main {
             System.out.println("Would you like to upgrade any of your properties?");
             String upgrader = input.next();
             if (upgrader.equals("yes") || upgrader.equals("Yes")) {
-                int browns=1;
-                int lightBlues=0;
-                int pinks=0;
-                int oranges=0;
-                int reds=0;
-                int yellows=0;
-                int greens=0;
-                int darkBlues=1;
-                int[] colors ={browns,lightBlues,pinks,oranges,reds,yellows,greens,darkBlues};
+                String owned = "brown darkblue";
                 for (int i=0;i<current.data.getProperties().size();i++){
-
                     String color = current.data.getProperties().get(i).getColor();
-                    if (color.equals("brown")){
-                        browns++;
-                    }
-                    if (color.equals("light blue")){
-                        lightBlues++;
-                    }
-                    if (color.equals("pink")){
-                        pinks++;
-                    }
-                    if (color.equals("orange")){
-                        oranges++;
-                    }
-                    if (color.equals("red")){
-                        reds++;
-                    }
-                    if (color.equals("yellow")){
-                        yellows++;
-                    }
-                    if (color.equals("green")){
-                        greens++;
+                    if (color.equals("light blue")) {
+                        color = "lightblue";
                     }
                     if (color.equals("dark blue")){
-                        darkBlues++;
+                        color = "darkblue";
                     }
+                    owned = owned + " " + color;
                 }
-                for (int i=0;i<colors.length;i++){
-                    if (colors[i]==3){
-
+                while (owned.length()>0){
+                    String color = owned.substring(0,owned.indexOf(' '));
+                    String copy = owned;
+                    int count = 0;
+                    while (copy.length()>0){
+                        if (color.substring(0,copy.indexOf(' ')).equals(color)){
+                            count++;
+                        }
+                        copy = copy.substring(copy.indexOf(' ')+1);
                     }
+                    if (count==3){
+                        if (color.equals("darkblue")){
+                            color = "dark blue";
+                        }
+                        if (color.equals("lightblue")){
+                            color = "light blue";
+                        }
+                        System.out.println("Would you like to upgrade a "+color+" property?");
+                        upgrader=input.next();
+                        if (upgrader.equals("yes") || upgrader.equals("Yes")){
+                            System.out.println("Select which property by number");
+                            for (int i=0;i<current.data.getProperties().size();i++){
+                                if (current.data.getProperties().get(i).getColor().equals(color)) {
+                                    System.out.println(i + 1 + ": " + current.data.getProperties().get(i).getName());
+                                }
+                            }
+                            int upgrade = input.nextInt() - 1;
+                            current.data.getProperties().get(upgrade).setHouseNum(current.data.getProperties().get(upgrade).getHouseNum()+1);
+
+                            premove(current);
+                        }
+                    }
+                    owned = owned.substring(owned.indexOf(' ')+1);
                 }
             }
         }

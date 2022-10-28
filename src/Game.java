@@ -180,6 +180,32 @@ public class Game {
         }
     }
     public void sell(BoardSpace spot, Player currentPlayer){
+        if (spot.getHouseNum()>0){
+            if (spot.getColor().equals("brown")||spot.getColor().equals("light blue")){
+                for (int i=0;i<spot.getHouseNum();i++){
+                    currentPlayer.setMoney(currentPlayer.getMoney()+25);
+                }
+                spot.setHouseNum(0);
+            }
+            if (spot.getColor().equals("pink")||spot.getColor().equals("orange")){
+                for (int i=0;i<spot.getHouseNum();i++){
+                    currentPlayer.setMoney(currentPlayer.getMoney()+50);
+                }
+                spot.setHouseNum(0);
+            }
+            if (spot.getColor().equals("red")||spot.getColor().equals("yellow")){
+                for (int i=0;i<spot.getHouseNum();i++){
+                    currentPlayer.setMoney(currentPlayer.getMoney()+75);
+                }
+                spot.setHouseNum(0);
+            }
+            if (spot.getColor().equals("green")||spot.getColor().equals("dark blue")){
+                for (int i=0;i<spot.getHouseNum();i++){
+                    currentPlayer.setMoney(currentPlayer.getMoney()+100);
+                }
+                spot.setHouseNum(0);
+            }
+        }
         currentPlayer.setMoney(currentPlayer.getMoney()+spot.getCost());
         for(int i=0; i<currentPlayer.getProperties().size(); i++){
             if(currentPlayer.getProperties().get(i)==spot){
@@ -189,6 +215,32 @@ public class Game {
         spot.setPurchasable(true);
     }
     public void mortgage(BoardSpace spot, Player currentPlayer){
+        if (spot.getHouseNum()>0){
+            if (spot.getColor().equals("brown")||spot.getColor().equals("light blue")){
+                for (int i=0;i<spot.getHouseNum();i++){
+                    currentPlayer.setMoney(currentPlayer.getMoney()+25);
+                }
+                spot.setHouseNum(0);
+            }
+            if (spot.getColor().equals("pink")||spot.getColor().equals("orange")){
+                for (int i=0;i<spot.getHouseNum();i++){
+                    currentPlayer.setMoney(currentPlayer.getMoney()+50);
+                }
+                spot.setHouseNum(0);
+            }
+            if (spot.getColor().equals("red")||spot.getColor().equals("yellow")){
+                for (int i=0;i<spot.getHouseNum();i++){
+                    currentPlayer.setMoney(currentPlayer.getMoney()+75);
+                }
+                spot.setHouseNum(0);
+            }
+            if (spot.getColor().equals("green")||spot.getColor().equals("dark blue")){
+                for (int i=0;i<spot.getHouseNum();i++){
+                    currentPlayer.setMoney(currentPlayer.getMoney()+100);
+                }
+                spot.setHouseNum(0);
+            }
+        }
         currentPlayer.setMoney(currentPlayer.getMoney()+spot.getSell());
         spot.setMortgaged(true);
     }
