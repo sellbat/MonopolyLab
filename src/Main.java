@@ -212,7 +212,7 @@ public class Main {
         while (!game.isGameOver()){
             game.displayBoard(game.getPlayers().size(),printBoard);
             premove(now);
-            game.move(now,board);
+            game.move(now,board,0);
             game.bankruptcy(now.data);
             now=now.nextLink;
             game.gameOver();

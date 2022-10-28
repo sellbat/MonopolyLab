@@ -40,7 +40,7 @@ public class Game {
         //returns integer between 1 and 6
         return (int)(Math.random()*6+1);
     }
-    public void move(Link<Player> player, CircularLinkedList<BoardSpace> board){
+    public void move(Link<Player> player, CircularLinkedList<BoardSpace> board, int rollNumber){
         Player currentPlayer = player.data;
         int r1 = roll();
         int r2 = roll();
@@ -49,6 +49,14 @@ public class Game {
         //finds current position in the game map
         Link<BoardSpace> currentPosition = board.find(currentPlayer.getPosition());
         System.out.println(currentPlayer.getName() + "'s current balance is: $" + currentPlayer.getMoney());
+        //if the player rolls doubles three times in a row, he goes to jail
+        if(rollNumber==2&&r1==r2){
+            currentPlayer.setJailed(true);
+            currentPlayer.setTurnsInJail(3);
+            //link for the Jail spot
+            currentPlayer.setPosition(map.getFirst().nextLink.nextLink.nextLink.nextLink.nextLink.nextLink.nextLink.nextLink.nextLink.nextLink);
+            System.out.println(currentPlayer.getName() + "'s turn has ended since he rolled 3 doubles");
+        }
         if(currentPlayer.getJailed()) {
             currentPlayer.setTurnsInJail(currentPlayer.getTurnsInJail()-1);
             //decrements the players turns in jail
@@ -62,6 +70,7 @@ public class Game {
             else {
                 System.out.println("Would you like to pay 50$ to the banker to escape jail?");
                 String ans = input.next();
+                //player leaves jail if he pays 50$ to the banker
                 if (ans.equals("yes") || ans.equals("Yes")) {
                     currentPlayer.setMoney(currentPlayer.getMoney()-50);
                     escapeJail(currentPlayer);
@@ -74,6 +83,7 @@ public class Game {
                         System.out.println(currentPlayer.getName() + " has escaped from jail by rolling doubles");
                     }
                     else {
+                        //player loses turn in jail
                         System.out.println(currentPlayer.getName() + "'s has " + currentPlayer.getTurnsInJail() + " left");
                         System.out.println(currentPlayer.getName() + "'s turn has ended");
                         //exits method
@@ -95,6 +105,7 @@ public class Game {
         BoardSpace spot = player.data.getPosition().data;
         if (spot.getColor().equals("weird")) {
             if(spot.getName().equals("Go To Jail")){
+                //player goes to jail for 3 turns
                 currentPlayer.setJailed(true);
                 currentPlayer.setTurnsInJail(3);
                 //link for the Jail spot
@@ -112,10 +123,11 @@ public class Game {
         }
         else {
             if(spot.isPurchasable()){
+                //menu to buy the spot if the spot is purchasable
                 buy(spot, currentPlayer);
             }
             else if (spot.isMortgaged()){
-
+                //if spot is mortgaged, do nothing
             }
             else{
                 //payfee if you can't do anything above
@@ -123,7 +135,8 @@ public class Game {
             }
         }
         if (r1==r2){
-            move(player,board);
+            //if the player rolls doubles, he moves again and the turnNumber is incremented
+            move(player,board, rollNumber+1);
         }
     }
 
