@@ -69,7 +69,7 @@ public class Player {
     }
 
     public Player(String playerName, Link<BoardSpace> start, String symbol){
-        setMoney(1500.00);
+        setMoney(500.00);
         setName(playerName);
         ArrayList<BoardSpace> properties = new ArrayList<>();
         setProperties(properties);

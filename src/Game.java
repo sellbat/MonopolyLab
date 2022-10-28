@@ -44,6 +44,7 @@ public class Game {
         Player currentPlayer = player.data;
         int r1 = roll();
         int r2 = roll();
+        System.out.println(currentPlayer.getName() + " has rolled a " + r1 + "," + r2);
         int moves= r1+r2;
         //finds current position in the game map
         Link<BoardSpace> currentPosition = board.find(currentPlayer.getPosition());
@@ -90,6 +91,7 @@ public class Game {
             //sets current position to the position after adding moves
             currentPosition = currentPosition.nextLink;
         }
+        System.out.println(currentPlayer.getName() + " has landed on " + currentPlayer.getPosition().data.getName());
         BoardSpace spot = player.data.getPosition().data;
         if (spot.getColor().equals("weird")) {
             if(spot.getName().equals("Go To Jail")){

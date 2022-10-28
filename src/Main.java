@@ -53,121 +53,129 @@ public class Main {
         return (int)(Math.random()*6+1);
     }
     public static void premove(Link<Player> current){
+        System.out.println("Would "+current.data.getName()+" like to do anything before rolling");
         Scanner input= new Scanner(System.in);
-        if (!current.data.getProperties().isEmpty()) {
-            System.out.println("Would you like to sell any of your properties?");
-            String seller = input.next();
-            if (seller.equals("yes") || seller.equals("Yes")) {
-                System.out.println("Select which property by number");
-                for (int i=0;i<current.data.getProperties().size();i++){
-                    System.out.println(i+1+": "+current.data.getProperties().get(i).getName());
-                }
-                int sold = input.nextInt()-1;
-                game.sell(current.data.getProperties().get(sold),current.data);
-                premove(current);
-            }
-            System.out.println("Would you like to mortgage any of your properties?");
-            String morter = input.next();
-            if (morter.equals("yes") || morter.equals("Yes")) {
-                System.out.println("Select which property by number");
-                boolean any = false;
-                for (int i=0;i<current.data.getProperties().size();i++){
-                    if (!current.data.getProperties().get(i).isMortgaged()) {
-                        any=true;
+        String ready = input.next();
+        if (ready.equals("yes")) {
+            if (!current.data.getProperties().isEmpty()) {
+                System.out.println("Would " + current.data.getName() + " like to sell any of your properties?");
+                String seller = input.next();
+                if (seller.equals("yes") || seller.equals("Yes")) {
+                    System.out.println("Select which property by number");
+                    for (int i = 0; i < current.data.getProperties().size(); i++) {
                         System.out.println(i + 1 + ": " + current.data.getProperties().get(i).getName());
                     }
-                }
-                if (any) {
-                    int mortgaged = input.nextInt() - 1;
-                    game.mortgage(current.data.getProperties().get(mortgaged), current.data);
+                    int sold = input.nextInt() - 1;
+                    game.sell(current.data.getProperties().get(sold), current.data);
                     premove(current);
+                    return;
                 }
-                else {
-                    System.out.println("You have no mortgagable land");
-                    premove(current);
-                }
-            }
-            System.out.println("Would you like to unmortgage any of your properties?");
-            String unmorter = input.next();
-            if (unmorter.equals("yes") || unmorter.equals("Yes")) {
-                System.out.println("Select which property by number");
-                boolean any = false;
-                for (int i=0;i<current.data.getProperties().size();i++){
-                    if (current.data.getProperties().get(i).isMortgaged()) {
-                        any=true;
-                        System.out.println(i + 1 + ": " + current.data.getProperties().get(i).getName());
-                    }
-                }
-                if (any) {
-                    int unmortgaged = input.nextInt() - 1;
-                    game.unMortgage(current.data.getProperties().get(unmortgaged), current.data);
-                    premove(current);
-                }
-                else {
-                    System.out.println("You have no unmortgagable land");
-                    premove(current);
-                }
-            }
-            System.out.println("Would you like to upgrade any of your properties?");
-            String upgrader = input.next();
-            if (upgrader.equals("yes") || upgrader.equals("Yes")) {
-                String owned = "brown darkblue";
-                for (int i=0;i<current.data.getProperties().size();i++){
-                    String color = current.data.getProperties().get(i).getColor();
-                    if (color.equals("light blue")) {
-                        color = "lightblue";
-                    }
-                    if (color.equals("dark blue")){
-                        color = "darkblue";
-                    }
-                    owned = owned + " " + color;
-                }
-                while (owned.length()>0){
-                    String color = owned.substring(0,owned.indexOf(' '));
-                    String copy = owned;
-                    int count = 0;
-                    while (copy.length()>0){
-                        if (color.substring(0,copy.indexOf(' ')).equals(color)){
-                            count++;
+                System.out.println("Would you like to mortgage any of your properties?");
+                String morter = input.next();
+                if (morter.equals("yes") || morter.equals("Yes")) {
+                    System.out.println("Select which property by number");
+                    boolean any = false;
+                    for (int i = 0; i < current.data.getProperties().size(); i++) {
+                        if (!current.data.getProperties().get(i).isMortgaged()) {
+                            any = true;
+                            System.out.println(i + 1 + ": " + current.data.getProperties().get(i).getName());
                         }
-                        copy = copy.substring(copy.indexOf(' ')+1);
                     }
-                    if (count==3){
-                        if (color.equals("darkblue")){
-                            color = "dark blue";
+                    if (any) {
+                        int mortgaged = input.nextInt() - 1;
+                        game.mortgage(current.data.getProperties().get(mortgaged), current.data);
+                        premove(current);
+                        return;
+                    } else {
+                        System.out.println("You have no mortgagable land");
+                        premove(current);
+                        return;
+                    }
+                }
+                System.out.println("Would you like to unmortgage any of your properties?");
+                String unmorter = input.next();
+                if (unmorter.equals("yes") || unmorter.equals("Yes")) {
+                    System.out.println("Select which property by number");
+                    boolean any = false;
+                    for (int i = 0; i < current.data.getProperties().size(); i++) {
+                        if (current.data.getProperties().get(i).isMortgaged()) {
+                            any = true;
+                            System.out.println(i + 1 + ": " + current.data.getProperties().get(i).getName());
                         }
-                        if (color.equals("lightblue")){
-                            color = "light blue";
+                    }
+                    if (any) {
+                        int unmortgaged = input.nextInt() - 1;
+                        game.unMortgage(current.data.getProperties().get(unmortgaged), current.data);
+                        premove(current);
+                        return;
+                    } else {
+                        System.out.println("You have no unmortgagable land");
+                        premove(current);
+                        return;
+                    }
+                }
+                System.out.println("Would you like to upgrade any of your properties?");
+                String upgrader = input.next();
+                if (upgrader.equals("yes") || upgrader.equals("Yes")) {
+                    String owned = "brown darkblue";
+                    for (int i = 0; i < current.data.getProperties().size(); i++) {
+                        String color = current.data.getProperties().get(i).getColor();
+                        if (color.equals("light blue")) {
+                            color = "lightblue";
                         }
-                        System.out.println("Would you like to upgrade a "+color+" property?");
-                        upgrader=input.next();
-                        if (upgrader.equals("yes") || upgrader.equals("Yes")){
-                            System.out.println("Select which property by number");
-                            for (int i=0;i<current.data.getProperties().size();i++){
-                                if (current.data.getProperties().get(i).getColor().equals(color)) {
-                                    System.out.println(i + 1 + ": " + current.data.getProperties().get(i).getName());
+                        if (color.equals("dark blue")) {
+                            color = "darkblue";
+                        }
+                        owned = owned + " " + color;
+                    }
+                    while (owned.length() > 0) {
+                        String color = owned.substring(0, owned.indexOf(' '));
+                        String copy = owned;
+                        int count = 0;
+                        while (copy.length() > 0) {
+                            if (color.substring(0, copy.indexOf(' ')).equals(color)) {
+                                count++;
+                            }
+                            copy = copy.substring(copy.indexOf(' ') + 1);
+                        }
+                        if (count == 3) {
+                            if (color.equals("darkblue")) {
+                                color = "dark blue";
+                            }
+                            if (color.equals("lightblue")) {
+                                color = "light blue";
+                            }
+                            System.out.println("Would you like to upgrade a " + color + " property?");
+                            upgrader = input.next();
+                            if (upgrader.equals("yes") || upgrader.equals("Yes")) {
+                                System.out.println("Select which property by number");
+                                for (int i = 0; i < current.data.getProperties().size(); i++) {
+                                    if (current.data.getProperties().get(i).getColor().equals(color)) {
+                                        System.out.println(i + 1 + ": " + current.data.getProperties().get(i).getName());
+                                    }
                                 }
+                                int upgrade = input.nextInt() - 1;
+                                int price = 0;
+                                current.data.getProperties().get(upgrade).setHouseNum(current.data.getProperties().get(upgrade).getHouseNum() + 1);
+                                if (current.data.getProperties().get(upgrade).getColor().equals("brown") || current.data.getProperties().get(upgrade).getColor().equals("light blue")) {
+                                    price = 50;
+                                }
+                                if (current.data.getProperties().get(upgrade).getColor().equals("pink") || current.data.getProperties().get(upgrade).getColor().equals("orange")) {
+                                    price = 100;
+                                }
+                                if (current.data.getProperties().get(upgrade).getColor().equals("red") || current.data.getProperties().get(upgrade).getColor().equals("yellow")) {
+                                    price = 150;
+                                }
+                                if (current.data.getProperties().get(upgrade).getColor().equals("green") || current.data.getProperties().get(upgrade).getColor().equals("dark blue")) {
+                                    price = 200;
+                                }
+                                current.data.setMoney(current.data.getMoney() - price);
+                                premove(current);
+                                return;
                             }
-                            int upgrade = input.nextInt() - 1;
-                            int price = 0;
-                            current.data.getProperties().get(upgrade).setHouseNum(current.data.getProperties().get(upgrade).getHouseNum()+1);
-                            if (current.data.getProperties().get(upgrade).getColor().equals("brown")||current.data.getProperties().get(upgrade).getColor().equals("light blue")){
-                                price = 50;
-                            }
-                            if (current.data.getProperties().get(upgrade).getColor().equals("pink")||current.data.getProperties().get(upgrade).getColor().equals("orange")){
-                                price = 100;
-                            }
-                            if (current.data.getProperties().get(upgrade).getColor().equals("red")||current.data.getProperties().get(upgrade).getColor().equals("yellow")){
-                                price = 150;
-                            }
-                            if (current.data.getProperties().get(upgrade).getColor().equals("green")||current.data.getProperties().get(upgrade).getColor().equals("dark blue")){
-                                price = 200;
-                            }
-                            current.data.setMoney(current.data.getMoney()-price);
-                            premove(current);
                         }
+                        owned = owned.substring(owned.indexOf(' ') + 1);
                     }
-                    owned = owned.substring(owned.indexOf(' ')+1);
                 }
             }
         }
@@ -192,17 +200,17 @@ public class Main {
         Player topHat = new Player("Top Hat",GoSpot, "P4");
         Player Brantley = new Player("Brantley",GoSpot, "P5");
         Player connor = new Player("Connor",GoSpot, "P4");
-        Player[] players = {thimble,boat,iron, topHat,Brantley,connor};
+        Player[] players = {thimble,boat};
         for (int i=0;i<players.length;i++){
             Link<Player> add = new Link(players[i]);
             pieces.insertFirst(add.data);
         }
         game = new Game(board, pieces);
-        game.displayBoard(6,printBoard);
+        game.displayBoard(2,printBoard);
         int counter = 0;
         Link<Player> now = pieces.getFirst();
         while (!game.isGameOver()){
-            game.displayBoard(6,printBoard);
+            game.displayBoard(game.getPlayers().size(),printBoard);
             premove(now);
             game.move(now,board);
             game.bankruptcy(now.data);

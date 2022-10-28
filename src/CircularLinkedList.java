@@ -71,4 +71,18 @@ public class CircularLinkedList<T> {
             }
         }
     }
+    public int size(){
+        Link<T> current = first;
+        int counter = 0;
+        if(first==last){
+            return 1;
+        }
+        else {
+            while (current.nextLink!=first){
+                counter++;
+                current=current.nextLink;
+            }
+        }
+        return counter+1;
+    }
 }
